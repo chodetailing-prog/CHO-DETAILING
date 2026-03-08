@@ -7,20 +7,31 @@ import { PortfolioItem, getPortfolioItems } from "@/lib/store";
 export default function PortfolioDetail() {
   const { id } = useParams<{ id: string }>();
   const [item, setItem] = useState<PortfolioItem | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadItem = async () => {
+      setIsLoading(true);
       const items = await getPortfolioItems();
       const found = items.find((i) => i.id === id);
       if (found) {
         setItem(found);
       }
+      setIsLoading(false);
     };
     loadItem();
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (!item) {
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-pulse text-black/30 tracking-widest uppercase">Loading Portfolio...</div>
+      </div>
+    );
+  }
+
+  if (!item && !isLoading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center px-6">
         <h2 className="text-2xl font-bold mb-4">포트폴리오를 찾을 수 없습니다.</h2>
@@ -55,10 +66,11 @@ export default function PortfolioDetail() {
           className="lg:col-span-1 space-y-12"
         >
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tighter uppercase mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase mb-8 leading-none">
               {item.title}
             </h1>
-            <p className="text-lg text-black/60 font-light leading-relaxed">
+            <div className="w-24 h-1.5 bg-black mb-10" />
+            <p className="text-xl text-black/60 font-light leading-relaxed max-w-xl">
               {item.description || "상세 설명이 없습니다."}
             </p>
           </div>
@@ -89,7 +101,7 @@ export default function PortfolioDetail() {
               to="/contact" 
               className="inline-block w-full py-4 bg-black text-white text-center font-medium tracking-widest uppercase hover:bg-black/80 transition-colors"
             >
-              Book Now
+              문의 바로가기
             </Link>
           </div>
         </motion.div>

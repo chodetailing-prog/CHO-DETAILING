@@ -18,6 +18,7 @@ export default function Home() {
     };
     
     loadData();
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -88,7 +89,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {recentWorks.map((item) => (
-              <Link to="/portfolio" key={item.id} className="group block overflow-hidden">
+              <Link to={`/portfolio/${item.id}`} key={item.id} className="group block overflow-hidden">
                 <div className="aspect-[4/3] overflow-hidden bg-black/10">
                   <img
                     src={item.image}

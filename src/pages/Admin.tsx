@@ -9,7 +9,11 @@ import {
   deletePortfolioItem, 
   fileToBase64,
   getHeroImage,
-  saveHeroImage
+  saveHeroImage,
+  Service,
+  subscribeServices,
+  saveService,
+  deleteService
 } from "@/lib/store";
 
 export default function Admin() {
@@ -25,9 +29,14 @@ export default function Admin() {
   const [isEditingPost, setIsEditingPost] = useState(false);
   const [currentPost, setCurrentPost] = useState<Partial<PortfolioItem>>({});
 
+  const [services, setServices] = useState<Service[]>([]);
+  const [isEditingService, setIsEditingService] = useState(false);
+  const [currentService, setCurrentService] = useState<Partial<Service>>({});
+
   const heroFileInputRef = useRef<HTMLInputElement>(null);
   const postThumbnailInputRef = useRef<HTMLInputElement>(null);
   const postGalleryInputRef = useRef<HTMLInputElement>(null);
+  const serviceImageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const authStatus = localStorage.getItem("adminAuth");
@@ -46,8 +55,13 @@ export default function Admin() {
       setPosts(items);
     });
 
+    const unsubscribeServices = subscribeServices((items) => {
+      setServices(items);
+    });
+
     return () => {
       unsubscribePosts();
+      unsubscribeServices();
     };
   }, []);
 
@@ -137,6 +151,48 @@ export default function Admin() {
     }
   };
 
+  const handleServiceImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const base64 = await fileToBase64(file);
+      setCurrentService({ ...currentService, image: base64 });
+    }
+  };
+
+  const handleSaveService = async () => {
+    if (!currentService.title || !currentService.image) {
+      alert("제목과 이미지는 필수입니다.");
+      return;
+    }
+
+    const serviceToSave: Service = {
+      id: currentService.id || Date.now().toString(),
+      title: currentService.title || "",
+      price: currentService.price || "",
+      description: currentService.description || "",
+      image: currentService.image || "",
+      features: currentService.features || []
+    };
+
+    try {
+      await saveService(serviceToSave);
+      setIsEditingService(false);
+      setCurrentService({});
+    } catch (error) {
+      alert("저장 실패: 권한이 없거나 오류가 발생했습니다.");
+    }
+  };
+
+  const handleDeleteService = async (id: string) => {
+    if (confirm("정말 이 서비스를 삭제하시겠습니까?")) {
+      try {
+        await deleteService(id);
+      } catch (error) {
+        alert("삭제 실패: 권한이 없거나 오류가 발생했습니다.");
+      }
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center">
@@ -177,6 +233,7 @@ export default function Admin() {
 
   const tabs = [
     { id: "posts", label: "Post Management", icon: FileText },
+    { id: "services", label: "Service Management", icon: Edit3 },
     { id: "settings", label: "Customization", icon: Settings },
   ];
 
@@ -399,6 +456,160 @@ export default function Admin() {
                       {posts.length === 0 && (
                         <tr>
                           <td colSpan={4} className="p-8 text-center text-black/50">No posts found.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {activeTab === "services" && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-8"
+            >
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold tracking-tight">Service Management</h2>
+                <button 
+                  onClick={() => {
+                    setCurrentService({ features: [] });
+                    setIsEditingService(true);
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 bg-black text-white text-sm font-medium tracking-widest uppercase hover:bg-black/80 transition-colors rounded-md"
+                >
+                  <Plus size={16} /> New Service
+                </button>
+              </div>
+
+              {isEditingService ? (
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-black/5 space-y-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-bold">{currentService.id ? "Edit Service" : "New Service"}</h3>
+                    <button onClick={() => setIsEditingService(false)} className="text-black/50 hover:text-black"><X size={20} /></button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium tracking-widest uppercase text-black/60">Title</label>
+                      <input 
+                        type="text" 
+                        value={currentService.title || ""}
+                        onChange={(e) => setCurrentService({...currentService, title: e.target.value})}
+                        className="w-full bg-transparent border-b border-black/20 py-2 focus:outline-none focus:border-black transition-colors"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium tracking-widest uppercase text-black/60">Price</label>
+                      <input 
+                        type="text" 
+                        value={currentService.price || ""}
+                        onChange={(e) => setCurrentService({...currentService, price: e.target.value})}
+                        className="w-full bg-transparent border-b border-black/20 py-2 focus:outline-none focus:border-black transition-colors"
+                        placeholder="From ₩000,000"
+                      />
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-sm font-medium tracking-widest uppercase text-black/60">Description</label>
+                      <textarea 
+                        value={currentService.description || ""}
+                        onChange={(e) => setCurrentService({...currentService, description: e.target.value})}
+                        rows={3}
+                        className="w-full bg-transparent border-b border-black/20 py-2 focus:outline-none focus:border-black transition-colors resize-none"
+                      />
+                    </div>
+
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-sm font-medium tracking-widest uppercase text-black/60">Features (One per line)</label>
+                      <textarea 
+                        value={currentService.features?.join("\n") || ""}
+                        onChange={(e) => setCurrentService({...currentService, features: e.target.value.split("\n")})}
+                        rows={5}
+                        className="w-full bg-transparent border border-black/10 p-3 focus:outline-none focus:border-black transition-colors resize-none rounded-md"
+                        placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+                      />
+                    </div>
+                    
+                    {/* Image Upload */}
+                    <div className="space-y-4 md:col-span-2">
+                      <label className="text-sm font-medium tracking-widest uppercase text-black/60 block">Service Image</label>
+                      <div className="flex items-start gap-6">
+                        <div className="w-32 aspect-square bg-black/5 rounded-md overflow-hidden border border-black/10">
+                          {currentService.image ? (
+                            <img src={currentService.image} alt="Service" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-black/20">
+                              <ImageIcon size={32} />
+                            </div>
+                          )}
+                        </div>
+                        <button 
+                          onClick={() => serviceImageInputRef.current?.click()}
+                          className="flex items-center gap-2 px-4 py-2 bg-black text-white text-xs font-medium tracking-widest uppercase hover:bg-black/80 transition-colors rounded-md"
+                        >
+                          <Upload size={14} /> Upload Image
+                        </button>
+                        <input 
+                          type="file" 
+                          ref={serviceImageInputRef}
+                          onChange={handleServiceImageUpload}
+                          accept="image/*"
+                          className="hidden"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="pt-8 flex gap-4 border-t border-black/5">
+                    <button onClick={handleSaveService} className="px-8 py-3 bg-black text-white font-medium tracking-widest uppercase hover:bg-black/80 transition-colors rounded-md">Save Service</button>
+                    <button onClick={() => setIsEditingService(false)} className="px-8 py-3 bg-black/5 text-black font-medium tracking-widest uppercase hover:bg-black/10 transition-colors rounded-md">Cancel</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white rounded-lg shadow-sm border border-black/5 overflow-hidden">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-black/10 text-xs font-medium tracking-widest uppercase text-black/50">
+                        <th className="p-4 w-16">Image</th>
+                        <th className="p-4">Title</th>
+                        <th className="p-4">Price</th>
+                        <th className="p-4 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {services.map((service) => (
+                        <tr key={service.id} className="border-b border-black/5 hover:bg-black/5 transition-colors">
+                          <td className="p-4">
+                            <div className="w-12 h-12 bg-black/10 rounded overflow-hidden">
+                              <img src={service.image} alt={service.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                            </div>
+                          </td>
+                          <td className="p-4 font-medium">{service.title}</td>
+                          <td className="p-4 text-black/60 text-sm">{service.price}</td>
+                          <td className="p-4 text-right">
+                            <button 
+                              onClick={() => {
+                                setCurrentService(service);
+                                setIsEditingService(true);
+                              }}
+                              className="p-2 text-black/40 hover:text-black transition-colors inline-block"
+                            >
+                              <Edit3 size={16} />
+                            </button>
+                            <button 
+                              onClick={() => handleDeleteService(service.id)}
+                              className="p-2 text-black/40 hover:text-red-500 transition-colors inline-block ml-2"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                      {services.length === 0 && (
+                        <tr>
+                          <td colSpan={4} className="p-8 text-center text-black/50">No services found.</td>
                         </tr>
                       )}
                     </tbody>

@@ -45,17 +45,38 @@ service cloud.firestore {
              data.heroImage is string && data.heroImage.size() < 1048576; // Up to 1MB for base64
     }
 
+    function isValidService(data) {
+      return data.keys().hasAll(['id', 'title', 'price', 'description', 'features', 'image']) &&
+             data.id is string &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 100 &&
+             data.price is string &&
+             data.description is string && data.description.size() < 2000 &&
+             data.features is list &&
+             data.image is string && data.image.size() < 1048576;
+    }
+
     // ===============================================================
     // Rules
     // ===============================================================
 
     // Portfolio items are publicly viewable
-    // Admin operations require a secret key match or admin status
     match /portfolio/{itemId} {
       allow read: if true;
-      allow create, update: if isValidPortfolioItem(request.resource.data) && 
-                               (request.resource.data.admin_key == '041018' || isAdmin());
-      allow delete: if isAdmin() || true; 
+      allow create: if isValidPortfolioItem(request.resource.data) && 
+                      (request.resource.data.admin_key == '041018' || isAdmin());
+      allow update: if isValidPortfolioItem(request.resource.data) && 
+                      (request.resource.data.admin_key == '041018' || isAdmin());
+      allow delete: if isAdmin(); 
+    }
+
+    // Services are publicly viewable
+    match /services/{serviceId} {
+      allow read: if true;
+      allow create: if isValidService(request.resource.data) && 
+                      (request.resource.data.admin_key == '041018' || isAdmin());
+      allow update: if isValidService(request.resource.data) && 
+                      (request.resource.data.admin_key == '041018' || isAdmin());
+      allow delete: if isAdmin();
     }
 
     // User profiles

@@ -9,7 +9,58 @@ import {
   orderBy,
   getDoc
 } from "firebase/firestore";
-import { db } from "@/firebase";
+import { db, auth } from "@/firebase";
+
+export enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId: string | undefined;
+    email: string | null | undefined;
+    emailVerified: boolean | undefined;
+    isAnonymous: boolean | undefined;
+    tenantId: string | null | undefined;
+    providerInfo: {
+      providerId: string;
+      displayName: string | null;
+      email: string | null;
+      photoUrl: string | null;
+    }[];
+  }
+}
+
+function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+      tenantId: auth.currentUser?.tenantId,
+      providerInfo: auth.currentUser?.providerData.map(provider => ({
+        providerId: provider.providerId,
+        displayName: provider.displayName,
+        email: provider.email,
+        photoUrl: provider.photoURL
+      })) || []
+    },
+    operationType,
+    path
+  }
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
+}
 
 export interface PortfolioItem {
   id: string;
@@ -22,18 +73,34 @@ export interface PortfolioItem {
   admin_key?: string; // For security rules validation
 }
 
+export interface Service {
+  id: string;
+  title: string;
+  price: string;
+  description: string;
+  features: string[];
+  image: string;
+  admin_key?: string;
+}
+
 // Collection references
 const portfolioCol = collection(db, "portfolio");
+const servicesCol = collection(db, "services");
 const configDoc = doc(db, "config", "main");
 
 export async function getPortfolioItems(): Promise<PortfolioItem[]> {
   const q = query(portfolioCol, orderBy("date", "desc"));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => {
-    const data = doc.data();
-    delete data.admin_key; // Hide key from frontend
-    return { ...data, id: doc.id } as PortfolioItem;
-  });
+  try {
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => {
+      const data = doc.data();
+      delete data.admin_key; // Hide key from frontend
+      return { ...data, id: doc.id } as PortfolioItem;
+    });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.GET, "portfolio");
+    return [];
+  }
 }
 
 export function subscribePortfolioItems(callback: (items: PortfolioItem[]) => void) {
@@ -45,6 +112,8 @@ export function subscribePortfolioItems(callback: (items: PortfolioItem[]) => vo
       return { ...data, id: doc.id } as PortfolioItem;
     });
     callback(items);
+  }, (error) => {
+    handleFirestoreError(error, OperationType.GET, "portfolio");
   });
 }
 
@@ -56,6 +125,54 @@ export async function savePortfolioItem(item: PortfolioItem) {
 export async function deletePortfolioItem(id: string) {
   const itemDoc = doc(portfolioCol, id);
   await deleteDoc(itemDoc);
+}
+
+export async function getServices(): Promise<Service[]> {
+  try {
+    const snapshot = await getDocs(servicesCol);
+    return snapshot.docs.map(doc => {
+      const data = doc.data();
+      delete data.admin_key;
+      return { ...data, id: doc.id } as Service;
+    });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.GET, "services");
+    return [];
+  }
+}
+
+export function subscribeServices(callback: (items: Service[]) => void) {
+  return onSnapshot(servicesCol, (snapshot) => {
+    const items = snapshot.docs.map(doc => {
+      const data = doc.data();
+      delete data.admin_key;
+      return { ...data, id: doc.id } as Service;
+    });
+    callback(items);
+  }, (error) => {
+    handleFirestoreError(error, OperationType.GET, "services");
+  });
+}
+
+export async function saveService(service: Service) {
+  const serviceDoc = doc(servicesCol, service.id);
+  await setDoc(serviceDoc, { ...service, admin_key: "041018" });
+}
+
+export async function deleteService(id: string) {
+  const serviceDoc = doc(servicesCol, id);
+  await deleteDoc(serviceDoc);
+}
+
+export async function getServiceById(id: string): Promise<Service | null> {
+  const serviceDoc = doc(servicesCol, id);
+  const snapshot = await getDoc(serviceDoc);
+  if (snapshot.exists()) {
+    const data = snapshot.data();
+    delete data.admin_key;
+    return { ...data, id: snapshot.id } as Service;
+  }
+  return null;
 }
 
 export async function getHeroImage(): Promise<string> {
@@ -114,6 +231,95 @@ export async function seedPortfolioItems() {
 
     for (const item of examples) {
       await savePortfolioItem(item);
+    }
+  }
+
+  const servicesSnapshot = await getDocs(servicesCol);
+  if (servicesSnapshot.empty) {
+    const defaultServices: Service[] = [
+      {
+        id: "interior",
+        title: "Interior Detail",
+        price: "From ₩150,000",
+        description: "단순한 세차를 넘어 실내의 모든 오염 요소를 제거하고 신차 수준의 쾌적함을 복원합니다. 고온 스팀 살균과 천연 가죽 케어 시스템을 통해 보이지 않는 세균까지 완벽하게 케어합니다.",
+        image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop",
+        features: [
+          "고온 스팀 살균 및 틈새 정밀 세척",
+          "프리미엄 가죽 클리닝 & 컨디셔닝 (PH 밸런스 케어)",
+          "천장 및 바닥 카페트 딥 클리닝 (오염 및 얼룩 제거)",
+          "실내 냄새 제거 및 오존 살균 탈취",
+          "대시보드, 도어 트림 UV 보호제 도포",
+          "에어컨 송풍구 정밀 클리닝"
+        ]
+      },
+      {
+        id: "paint",
+        title: "Paint Correction",
+        price: "From ₩600,000",
+        description: "도장면의 스크래치, 스월마크, 워터스팟 등을 정밀하게 연마하여 신차 이상의 완벽한 도장 상태로 복원하는 폴리싱 작업입니다.",
+        image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop",
+        features: [
+          "정밀 마스킹 및 전처리",
+          "수성 광택 (1~3 Step)",
+          "홀로그램 및 스월마크 완벽 제거",
+          "도장면 탈지 및 검수",
+          "프리미엄 실런트 코팅"
+        ]
+      },
+      {
+        id: "ceramic",
+        title: "Ceramic Coating",
+        price: "From ₩800,000",
+        description: "최상급 세라믹 코팅제를 도포하여 도장면을 보호하고, 강력한 발수력과 방오성을 부여하여 차량 관리를 수월하게 합니다.",
+        image: "https://images.unsplash.com/photo-1552689486-f6773047d19f?q=80&w=2000&auto=format&fit=crop",
+        features: [
+          "Paint Correction 공정 포함",
+          "9H 경도 프리미엄 세라믹 코팅",
+          "휠 및 캘리퍼 코팅",
+          "유리 전체 발수 코팅",
+          "플라스틱 트림 코팅"
+        ]
+      },
+      {
+        id: "signature",
+        title: "Premium Hand Wash",
+        price: "From ₩250,000",
+        description: "차량 내/외부의 오염을 안전하게 제거하고 본연의 색감과 광택을 끌어올리는 프리미엄 세차 서비스입니다.",
+        image: "https://images.unsplash.com/photo-1601362840469-82e058f82400?q=80&w=2000&auto=format&fit=crop",
+        features: [
+          "프리워시 및 스노우폼 세차",
+          "철분 및 타르 제거",
+          "프리미엄 카나우바 왁스 코팅",
+          "실내 진공 청소 및 가죽 클리닝",
+          "엔진룸 기본 클리닝"
+        ]
+      }
+    ];
+
+    for (const service of defaultServices) {
+      await saveService(service);
+    }
+  } else {
+    // Even if not empty, ensure the specific new ones are there
+    const defaultServices: Service[] = [
+      {
+        id: "interior",
+        title: "Interior Detail",
+        price: "From ₩150,000",
+        description: "단순한 세차를 넘어 실내의 모든 오염 요소를 제거하고 신차 수준의 쾌적함을 복원합니다. 고온 스팀 살균과 천연 가죽 케어 시스템을 통해 보이지 않는 세균까지 완벽하게 케어합니다.",
+        image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop",
+        features: [
+          "고온 스팀 살균 및 틈새 정밀 세척",
+          "프리미엄 가죽 클리닝 & 컨디셔닝 (PH 밸런스 케어)",
+          "천장 및 바닥 카페트 딥 클리닝 (오염 및 얼룩 제거)",
+          "실내 냄새 제거 및 오존 살균 탈취",
+          "대시보드, 도어 트림 UV 보호제 도포",
+          "에어컨 송풍구 정밀 클리닝"
+        ]
+      }
+    ];
+    for (const service of defaultServices) {
+      await saveService(service);
     }
   }
 }

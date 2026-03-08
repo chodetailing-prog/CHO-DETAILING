@@ -1,21 +1,32 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, Instagram, Youtube } from "lucide-react";
+import { Menu, X, Instagram, Youtube, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-  }, [location.pathname]);
+    setIsServicesDropdownOpen(false);
+  }, [location.pathname, location.hash]);
 
   const navLinks = [
     { name: "HOME", path: "/" },
     { name: "PORTFOLIO", path: "/portfolio" },
-    { name: "SERVICES", path: "/services" },
+    { 
+      name: "SERVICES", 
+      path: "/services",
+      dropdown: [
+        { name: "Interior Detail", path: "/services/interior" },
+        { name: "Paint Correction", path: "/services/paint" },
+        { name: "Ceramic Coating", path: "/services/ceramic" },
+        { name: "Premium Hand Wash", path: "/services/signature" },
+      ]
+    },
     { name: "CONTACT", path: "/contact" },
   ];
 
@@ -24,23 +35,82 @@ export default function Layout() {
       {/* Navbar */}
       <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-black/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link to="/" className="text-xl font-bold tracking-widest uppercase">
+          <Link 
+            to="/" 
+            className="text-xl font-bold tracking-widest uppercase"
+            onClick={(e) => {
+              if (location.pathname === "/") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+          >
             CHO DETAILING
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={cn(
-                  "text-sm font-medium tracking-widest transition-colors hover:text-black/60",
-                  location.pathname === link.path ? "text-black" : "text-black/40"
-                )}
+              <div 
+                key={link.path} 
+                className="relative group"
+                onMouseEnter={() => link.dropdown && setIsServicesDropdownOpen(true)}
+                onMouseLeave={() => link.dropdown && setIsServicesDropdownOpen(false)}
               >
-                {link.name}
-              </Link>
+                {link.dropdown ? (
+                  <div className="flex items-center gap-1 cursor-pointer">
+                    <span
+                      className={cn(
+                        "text-sm font-medium tracking-widest transition-colors hover:text-black/60",
+                        location.pathname.startsWith(link.path) ? "text-black" : "text-black/40"
+                      )}
+                    >
+                      {link.name}
+                    </span>
+                    <ChevronDown size={14} className={cn("transition-transform duration-200 text-black/40", isServicesDropdownOpen && "rotate-180")} />
+                    
+                    {/* Dropdown Menu */}
+                    <AnimatePresence>
+                      {isServicesDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute top-full left-0 mt-2 w-56 bg-white border border-black/5 shadow-xl py-4 z-50 rounded-lg overflow-hidden"
+                        >
+                          {link.dropdown.map((item) => (
+                            <Link
+                              key={item.path}
+                              to={item.path}
+                              className="block px-6 py-3 text-sm font-medium tracking-widest text-black/60 hover:text-black hover:bg-black/5 transition-colors"
+                              onClick={() => setIsServicesDropdownOpen(false)}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    to={link.path}
+                    onClick={(e) => {
+                      if (link.path === "/" && location.pathname === "/") {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                    }}
+                    className={cn(
+                      "text-sm font-medium tracking-widest transition-colors hover:text-black/60",
+                      location.pathname === link.path ? "text-black" : "text-black/40"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                )}
+              </div>
             ))}
             <div className="flex items-center gap-4 ml-4 pl-8 border-l border-black/10">
               <a 
@@ -83,18 +153,68 @@ export default function Layout() {
             exit={{ opacity: 0, y: -20 }}
             className="fixed inset-0 z-40 bg-white pt-24 px-6 md:hidden"
           >
-            <nav className="flex flex-col gap-6 text-2xl font-light tracking-widest">
+            <nav className="flex flex-col gap-6 text-2xl font-light tracking-widest overflow-y-auto max-h-[70vh] pb-12">
               {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={cn(
-                    "transition-colors",
-                    location.pathname === link.path ? "text-black font-medium" : "text-black/40"
+                <div key={link.path} className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    {link.dropdown ? (
+                      <span
+                        className={cn(
+                          "transition-colors",
+                          location.pathname.startsWith(link.path) ? "text-black font-medium" : "text-black/40"
+                        )}
+                        onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
+                      >
+                        {link.name}
+                      </span>
+                    ) : (
+                      <Link
+                        to={link.path}
+                        className={cn(
+                          "transition-colors",
+                          location.pathname === link.path ? "text-black font-medium" : "text-black/40"
+                        )}
+                      >
+                        {link.name}
+                      </Link>
+                    )}
+                    {link.dropdown && (
+                      <button 
+                        onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
+                        className="p-2 text-black/40"
+                      >
+                        <ChevronDown size={24} className={cn("transition-transform duration-200", isServicesDropdownOpen && "rotate-180")} />
+                      </button>
+                    )}
+                  </div>
+                  
+                  {link.dropdown && (
+                    <AnimatePresence>
+                      {isServicesDropdownOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="flex flex-col gap-4 pl-6 overflow-hidden"
+                        >
+                          {link.dropdown.map((item) => (
+                            <Link
+                              key={item.path}
+                              to={item.path}
+                              className="text-lg text-black/40 hover:text-black transition-colors"
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                setIsServicesDropdownOpen(false);
+                              }}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   )}
-                >
-                  {link.name}
-                </Link>
+                </div>
               ))}
               <div className="flex items-center gap-8 mt-4 pt-8 border-t border-black/10">
                 <a 
