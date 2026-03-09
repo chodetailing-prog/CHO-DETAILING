@@ -21,7 +21,7 @@ export default function Layout() {
       name: "SERVICES", 
       path: "/services",
       dropdown: [
-        { name: "Interior Detail", path: "/services/interior" },
+        { name: "Interior Detailing", path: "/services/interior" },
         { name: "Paint Correction", path: "/services/paint" },
         { name: "Ceramic Coating", path: "/services/ceramic" },
         { name: "Premium Hand Wash", path: "/services/signature" },
@@ -59,14 +59,22 @@ export default function Layout() {
               >
                 {link.dropdown ? (
                   <div className="flex items-center gap-1 cursor-pointer">
-                    <span
+                    <Link
+                      to={link.path}
+                      onClick={(e) => {
+                        if (location.pathname === link.path) {
+                          e.preventDefault();
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }
+                        setIsServicesDropdownOpen(false);
+                      }}
                       className={cn(
                         "text-sm font-medium tracking-widest transition-colors hover:text-black/60",
                         location.pathname.startsWith(link.path) ? "text-black" : "text-black/40"
                       )}
                     >
                       {link.name}
-                    </span>
+                    </Link>
                     <ChevronDown size={14} className={cn("transition-transform duration-200 text-black/40", isServicesDropdownOpen && "rotate-180")} />
                     
                     {/* Dropdown Menu */}
@@ -84,7 +92,13 @@ export default function Layout() {
                               key={item.path}
                               to={item.path}
                               className="block px-6 py-3 text-sm font-medium tracking-widest text-black/60 hover:text-black hover:bg-black/5 transition-colors"
-                              onClick={() => setIsServicesDropdownOpen(false)}
+                              onClick={(e) => {
+                                if (location.pathname === item.path) {
+                                  e.preventDefault();
+                                  window.scrollTo({ top: 0, behavior: "smooth" });
+                                }
+                                setIsServicesDropdownOpen(false);
+                              }}
                             >
                               {item.name}
                             </Link>
@@ -97,7 +111,7 @@ export default function Layout() {
                   <Link
                     to={link.path}
                     onClick={(e) => {
-                      if (link.path === "/" && location.pathname === "/") {
+                      if (location.pathname === link.path) {
                         e.preventDefault();
                         window.scrollTo({ top: 0, behavior: "smooth" });
                       }
@@ -158,18 +172,32 @@ export default function Layout() {
                 <div key={link.path} className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     {link.dropdown ? (
-                      <span
+                      <Link
+                        to={link.path}
+                        onClick={(e) => {
+                          if (location.pathname === link.path) {
+                            e.preventDefault();
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                            setIsMobileMenuOpen(false);
+                          }
+                        }}
                         className={cn(
                           "transition-colors",
                           location.pathname.startsWith(link.path) ? "text-black font-medium" : "text-black/40"
                         )}
-                        onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
                       >
                         {link.name}
-                      </span>
+                      </Link>
                     ) : (
                       <Link
                         to={link.path}
+                        onClick={(e) => {
+                          if (location.pathname === link.path) {
+                            e.preventDefault();
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                            setIsMobileMenuOpen(false);
+                          }
+                        }}
                         className={cn(
                           "transition-colors",
                           location.pathname === link.path ? "text-black font-medium" : "text-black/40"
@@ -273,7 +301,13 @@ export default function Layout() {
 
           <div className="text-sm text-black/50 text-center md:text-right">
             <p>© {new Date().getFullYear()} CHO DETAILING. All rights reserved.</p>
-            <Link to="/admin" className="hover:text-black transition-colors mt-2 inline-block">Admin Login</Link>
+            <Link 
+              to="/admin" 
+              className="hover:text-black transition-colors mt-2 inline-block"
+              onClick={() => window.scrollTo(0, 0)}
+            >
+              Admin Login
+            </Link>
           </div>
         </div>
       </footer>

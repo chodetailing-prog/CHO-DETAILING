@@ -36,7 +36,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-24 scroll-mt-24">
+    <div className="w-full max-w-7xl mx-auto px-6 pt-24 pb-12 scroll-mt-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,13 +53,13 @@ export default function Contact() {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
         {/* Inquiry Form */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-black/5 p-12 rounded-sm"
+          className="bg-black/5 pt-12 px-12 pb-6 rounded-sm"
         >
           <h2 className="text-3xl font-bold tracking-tight mb-12 uppercase text-black">예약 문의</h2>
           <form className="space-y-10" onSubmit={handleSubmit}>
@@ -105,7 +105,7 @@ export default function Contact() {
                   className="w-full bg-transparent border-b border-black/20 py-4 focus:outline-none focus:border-black transition-colors appearance-none text-lg text-black"
                 >
                   <option value="">서비스 선택</option>
-                  <option value="interior">Interior Detail</option>
+                  <option value="interior">Interior Detailing</option>
                   <option value="paint">Paint Correction</option>
                   <option value="ceramic">Ceramic Coating</option>
                   <option value="wash">Premium Hand Wash</option>
@@ -128,7 +128,7 @@ export default function Contact() {
             <button 
               type="submit"
               disabled={status === "submitting"}
-              className="w-full py-6 bg-black text-white font-bold tracking-[0.4em] uppercase hover:bg-black/80 transition-all hover:scale-[1.01] active:scale-[0.99] mt-12 disabled:opacity-50 disabled:cursor-not-allowed rounded-sm"
+              className="w-full py-6 bg-black text-white font-bold tracking-[0.4em] uppercase hover:bg-black/80 transition-all hover:scale-[1.01] active:scale-[0.99] mt-10 disabled:opacity-50 disabled:cursor-not-allowed rounded-sm"
             >
               {status === "submitting" ? "Sending..." : status === "success" ? "Message Sent!" : "Send Message"}
             </button>
@@ -186,6 +186,22 @@ export default function Contact() {
                 <span>Sunday</span>
                 <span className="italic">Closed</span>
               </p>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-sm font-bold tracking-[0.4em] uppercase text-black/30 mb-10 border-b border-black/5 pb-4">Location</h2>
+            <div className="w-full h-[300px] bg-black/5 rounded-sm overflow-hidden shadow-sm mb-16">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281203.205981427!2d125.18660335!3d36.5572291!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356421290515711b%3A0x39703f30e4370ee!2sSouth%20Korea!5e0!3m2!1sen!2skr!4v1710000000000!5m2!1sen!2skr"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="CHO DETAILING Location"
+              ></iframe>
             </div>
           </div>
 

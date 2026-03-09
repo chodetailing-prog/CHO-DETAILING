@@ -73,6 +73,22 @@ export interface PortfolioItem {
   admin_key?: string; // For security rules validation
 }
 
+export interface PricingCategory {
+  title: string;
+  items: {
+    label: string;
+    price: string;
+  }[];
+}
+
+export interface PricingPlan {
+  title: string;
+  price?: string;
+  description?: string;
+  features?: string[];
+  categories?: PricingCategory[];
+}
+
 export interface Service {
   id: string;
   title: string;
@@ -80,7 +96,9 @@ export interface Service {
   description: string;
   features: string[];
   image: string;
+  order: number;
   admin_key?: string;
+  pricing?: PricingPlan[];
 }
 
 // Collection references
@@ -130,11 +148,13 @@ export async function deletePortfolioItem(id: string) {
 export async function getServices(): Promise<Service[]> {
   try {
     const snapshot = await getDocs(servicesCol);
-    return snapshot.docs.map(doc => {
+    const items = snapshot.docs.map(doc => {
       const data = doc.data();
       delete data.admin_key;
       return { ...data, id: doc.id } as Service;
     });
+    // Sort in memory to handle documents without 'order' field
+    return items.sort((a, b) => (a.order || 99) - (b.order || 99));
   } catch (error) {
     handleFirestoreError(error, OperationType.GET, "services");
     return [];
@@ -148,7 +168,9 @@ export function subscribeServices(callback: (items: Service[]) => void) {
       delete data.admin_key;
       return { ...data, id: doc.id } as Service;
     });
-    callback(items);
+    // Sort in memory to handle documents without 'order' field
+    const sortedItems = items.sort((a, b) => (a.order || 99) - (b.order || 99));
+    callback(sortedItems);
   }, (error) => {
     handleFirestoreError(error, OperationType.GET, "services");
   });
@@ -239,10 +261,11 @@ export async function seedPortfolioItems() {
     const defaultServices: Service[] = [
       {
         id: "interior",
-        title: "Interior Detail",
+        title: "Interior Detailing",
         price: "From ₩150,000",
         description: "단순한 세차를 넘어 실내의 모든 오염 요소를 제거하고 신차 수준의 쾌적함을 복원합니다. 고온 스팀 살균과 천연 가죽 케어 시스템을 통해 보이지 않는 세균까지 완벽하게 케어합니다.",
         image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop",
+        order: 1,
         features: [
           "고온 스팀 살균 및 틈새 정밀 세척",
           "프리미엄 가죽 클리닝 & 컨디셔닝 (PH 밸런스 케어)",
@@ -250,20 +273,73 @@ export async function seedPortfolioItems() {
           "실내 냄새 제거 및 오존 살균 탈취",
           "대시보드, 도어 트림 UV 보호제 도포",
           "에어컨 송풍구 정밀 클리닝"
+        ],
+        pricing: [
+          {
+            title: "인테리어 디테일링 (Deep Cleaning)",
+            price: "별도 문의",
+            description: "실내 전체 및 트렁크 공간에 대한 정밀 스팀 살균 세정 서비스입니다.",
+            features: [
+              "대시보드, 센터콘솔, 도어패널 정밀 세정",
+              "가죽 시트 클리닝 및 컨디셔닝 (영양 공급)",
+              "패브릭 시트 딥클리닝 (샴푸 추출 방식)",
+              "바닥 매트 및 카페트 딥클리닝",
+              "플라스틱 부품 UV 보호 및 드레싱",
+              "유리 세정 (잔사 없는 투명함)"
+            ]
+          },
+          {
+            title: "오존 살균 탈취 (Ozone Treatment)",
+            description: "실내의 불쾌한 냄새를 근본적으로 제거하는 살균 탈취 서비스입니다.",
+            features: [
+              "실내 악취 원인균 제거",
+              "오존 가스를 이용한 구석구석 정밀 살균",
+              "담배 냄새, 곰팡이 냄새 등 중화"
+            ]
+          }
         ]
       },
       {
         id: "paint",
         title: "Paint Correction",
         price: "From ₩600,000",
-        description: "도장면의 스크래치, 스월마크, 워터스팟 등을 정밀하게 연마하여 신차 이상의 완벽한 도장 상태로 복원하는 폴리싱 작업입니다.",
+        description: "도장면의 스크래치, 스월마크, 워터스팟 등을 정밀하게 연마하여 신차 이상의 완벽한 도장 상태로 복원하는 광택 작업입니다.",
         image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop",
+        order: 2,
         features: [
           "정밀 마스킹 및 전처리",
           "수성 광택 (1~3 Step)",
           "홀로그램 및 스월마크 완벽 제거",
           "도장면 탈지 및 검수",
           "프리미엄 실런트 코팅"
+        ],
+        pricing: [
+          {
+            title: "라이트 폴리싱 (Light Polish)",
+            description: "매우 미세한 스크래치를 제거하고 도장면의 광택을 최대로 끌어올리는 1단계 광택 공정입니다.",
+            categories: [
+              {
+                title: "차종별 추가 비용",
+                items: [
+                  { label: "세단 / 스테이션 왜건", price: "+ ₩150,000" },
+                  { label: "지프 / SUV", price: "+ ₩220,000" }
+                ]
+              }
+            ]
+          },
+          {
+            title: "헤비 폴리싱 (Heavy Polish)",
+            description: "중간 정도에서 깊은 스크래치, 스월마크, 산화물 등을 제거하여 완벽한 도장 상태를 복원하는 다단계 광택 공정입니다.",
+            categories: [
+              {
+                title: "차종별 추가 비용",
+                items: [
+                  { label: "세단 / 스테이션 왜건", price: "+ ₩300,000" },
+                  { label: "지프 / SUV", price: "+ ₩450,000" }
+                ]
+              }
+            ]
+          }
         ]
       },
       {
@@ -272,12 +348,54 @@ export async function seedPortfolioItems() {
         price: "From ₩800,000",
         description: "최상급 세라믹 코팅제를 도포하여 도장면을 보호하고, 강력한 발수력과 방오성을 부여하여 차량 관리를 수월하게 합니다.",
         image: "https://images.unsplash.com/photo-1552689486-f6773047d19f?q=80&w=2000&auto=format&fit=crop",
+        order: 3,
         features: [
           "Paint Correction 공정 포함",
           "9H 경도 프리미엄 세라믹 코팅",
           "휠 및 캘리퍼 코팅",
           "유리 전체 발수 코팅",
           "플라스틱 트림 코팅"
+        ],
+        pricing: [
+          {
+            title: "신차 코팅 패키지 (New Car Package)",
+            description: "신차 출고 시 최상의 상태를 영구적으로 보존하기 위한 프리미엄 보호 패키지입니다.",
+            features: [
+              "정밀 디테일링 세차 및 탈지",
+              "도장면 정밀 검수",
+              "프라이머 폴리싱 (광택 증진)",
+              "최상급 세라믹 코팅 2레이어 시공",
+              "적외선 열처리 경과 공정"
+            ],
+            categories: [
+              {
+                title: "차종별 추가 비용",
+                items: [
+                  { label: "세단 / 스테이션 왜건", price: "+ ₩220,000" },
+                  { label: "지프 / SUV", price: "+ ₩450,000" }
+                ]
+              }
+            ]
+          },
+          {
+            title: "세라믹 코팅 패키지 (Standard Package)",
+            description: "기존 차량의 도장면을 복원한 후 강력한 보호막을 형성하는 패키지입니다.",
+            features: [
+              "클레이바 및 디컨타미네이션",
+              "다단계 머신 폴리싱 (도장면 복원)",
+              "최상급 세라믹 코팅 2레이어 시공",
+              "적외선 열처리 경과 공정"
+            ],
+            categories: [
+              {
+                title: "차종별 추가 비용",
+                items: [
+                  { label: "세단 / 스테이션 왜건", price: "+ ₩220,000" },
+                  { label: "지프 / SUV", price: "+ ₩450,000" }
+                ]
+              }
+            ]
+          }
         ]
       },
       {
@@ -286,12 +404,45 @@ export async function seedPortfolioItems() {
         price: "From ₩250,000",
         description: "차량 내/외부의 오염을 안전하게 제거하고 본연의 색감과 광택을 끌어올리는 프리미엄 세차 서비스입니다.",
         image: "https://images.unsplash.com/photo-1601362840469-82e058f82400?q=80&w=2000&auto=format&fit=crop",
+        order: 4,
         features: [
           "프리워시 및 스노우폼 세차",
           "철분 및 타르 제거",
           "프리미엄 카나우바 왁스 코팅",
           "실내 진공 청소 및 가죽 클리닝",
           "엔진룸 기본 클리닝"
+        ],
+        pricing: [
+          {
+            title: "프리미엄 핸드워시 (Premium Hand Wash)",
+            price: "₩95,000",
+            features: [
+              "2버킷 방식의 안전한 미트질",
+              "도어 힌지 및 틈새 정밀 세정",
+              "휠, 타이어, 휠하우스 클리닝",
+              "에어 드라잉 및 극세사 타월 건조",
+              "스프레이 왁스 또는 실런트 코팅",
+              "타이어 드레싱"
+            ]
+          },
+          {
+            title: "프리미엄 핸드워시 + 베이직 인테리어",
+            price: "₩175,000",
+            features: [
+              "프리미엄 핸드워시 모든 공정 포함",
+              "실내 진공 청소 및 먼지 제거",
+              "유리 및 거울 정밀 세정"
+            ]
+          },
+          {
+            title: "디컨타미네이션 핸드워시",
+            price: "₩125,000",
+            features: [
+              "프리미엄 핸드워시 모든 공정 포함",
+              "타르 및 철분 제거 (낙진 제거)",
+              "클레이바 작업 (필요 시)"
+            ]
+          }
         ]
       }
     ];
@@ -300,14 +451,15 @@ export async function seedPortfolioItems() {
       await saveService(service);
     }
   } else {
-    // Even if not empty, ensure the specific new ones are there
+    // Even if not empty, ensure the specific new ones are there with correct order
     const defaultServices: Service[] = [
       {
         id: "interior",
-        title: "Interior Detail",
+        title: "Interior Detailing",
         price: "From ₩150,000",
         description: "단순한 세차를 넘어 실내의 모든 오염 요소를 제거하고 신차 수준의 쾌적함을 복원합니다. 고온 스팀 살균과 천연 가죽 케어 시스템을 통해 보이지 않는 세균까지 완벽하게 케어합니다.",
         image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop",
+        order: 1,
         features: [
           "고온 스팀 살균 및 틈새 정밀 세척",
           "프리미엄 가죽 클리닝 & 컨디셔닝 (PH 밸런스 케어)",
@@ -315,6 +467,176 @@ export async function seedPortfolioItems() {
           "실내 냄새 제거 및 오존 살균 탈취",
           "대시보드, 도어 트림 UV 보호제 도포",
           "에어컨 송풍구 정밀 클리닝"
+        ],
+        pricing: [
+          {
+            title: "인테리어 디테일링 (Deep Cleaning)",
+            price: "별도 문의",
+            description: "실내 전체 및 트렁크 공간에 대한 정밀 스팀 살균 세정 서비스입니다.",
+            features: [
+              "대시보드, 센터콘솔, 도어패널 정밀 세정",
+              "가죽 시트 클리닝 및 컨디셔닝 (영양 공급)",
+              "패브릭 시트 딥클리닝 (샴푸 추출 방식)",
+              "바닥 매트 및 카페트 딥클리닝",
+              "플라스틱 부품 UV 보호 및 드레싱",
+              "유리 세정 (잔사 없는 투명함)"
+            ]
+          },
+          {
+            title: "오존 살균 탈취 (Ozone Treatment)",
+            description: "실내의 불쾌한 냄새를 근본적으로 제거하는 살균 탈취 서비스입니다.",
+            features: [
+              "실내 악취 원인균 제거",
+              "오존 가스를 이용한 구석구석 정밀 살균",
+              "담배 냄새, 곰팡이 냄새 등 중화"
+            ]
+          }
+        ]
+      },
+      {
+        id: "paint",
+        title: "Paint Correction",
+        price: "From ₩600,000",
+        description: "도장면의 스크래치, 스월마크, 워터스팟 등을 정밀하게 연마하여 신차 이상의 완벽한 도장 상태로 복원하는 광택 작업입니다.",
+        image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop",
+        order: 2,
+        features: [
+          "정밀 마스킹 및 전처리",
+          "수성 광택 (1~3 Step)",
+          "홀로그램 및 스월마크 완벽 제거",
+          "도장면 탈지 및 검수",
+          "프리미엄 실런트 코팅"
+        ],
+        pricing: [
+          {
+            title: "라이트 폴리싱 (Light Polish)",
+            description: "매우 미세한 스크래치를 제거하고 도장면의 광택을 최대로 끌어올리는 1단계 광택 공정입니다.",
+            categories: [
+              {
+                title: "차종별 추가 비용",
+                items: [
+                  { label: "세단 / 스테이션 왜건", price: "+ ₩150,000" },
+                  { label: "지프 / SUV", price: "+ ₩220,000" }
+                ]
+              }
+            ]
+          },
+          {
+            title: "헤비 폴리싱 (Heavy Polish)",
+            description: "중간 정도에서 깊은 스크래치, 스월마크, 산화물 등을 제거하여 완벽한 도장 상태를 복원하는 다단계 광택 공정입니다.",
+            categories: [
+              {
+                title: "차종별 추가 비용",
+                items: [
+                  { label: "세단 / 스테이션 왜건", price: "+ ₩300,000" },
+                  { label: "지프 / SUV", price: "+ ₩450,000" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "ceramic",
+        title: "Ceramic Coating",
+        price: "From ₩800,000",
+        description: "최상급 세라믹 코팅제를 도포하여 도장면을 보호하고, 강력한 발수력과 방오성을 부여하여 차량 관리를 수월하게 합니다.",
+        image: "https://images.unsplash.com/photo-1552689486-f6773047d19f?q=80&w=2000&auto=format&fit=crop",
+        order: 3,
+        features: [
+          "Paint Correction 공정 포함",
+          "9H 경도 프리미엄 세라믹 코팅",
+          "휠 및 캘리퍼 코팅",
+          "유리 전체 발수 코팅",
+          "플라스틱 트림 코팅"
+        ],
+        pricing: [
+          {
+            title: "신차 코팅 패키지 (New Car Package)",
+            description: "신차 출고 시 최상의 상태를 영구적으로 보존하기 위한 프리미엄 보호 패키지입니다.",
+            features: [
+              "정밀 디테일링 세차 및 탈지",
+              "도장면 정밀 검수",
+              "프라이머 폴리싱 (광택 증진)",
+              "최상급 세라믹 코팅 2레이어 시공",
+              "적외선 열처리 경과 공정"
+            ],
+            categories: [
+              {
+                title: "차종별 추가 비용",
+                items: [
+                  { label: "세단 / 스테이션 왜건", price: "+ ₩220,000" },
+                  { label: "지프 / SUV", price: "+ ₩450,000" }
+                ]
+              }
+            ]
+          },
+          {
+            title: "세라믹 코팅 패키지 (Standard Package)",
+            description: "기존 차량의 도장면을 복원한 후 강력한 보호막을 형성하는 패키지입니다.",
+            features: [
+              "클레이바 및 디컨타미네이션",
+              "다단계 머신 폴리싱 (도장면 복원)",
+              "최상급 세라믹 코팅 2레이어 시공",
+              "적외선 열처리 경과 공정"
+            ],
+            categories: [
+              {
+                title: "차종별 추가 비용",
+                items: [
+                  { label: "세단 / 스테이션 왜건", price: "+ ₩220,000" },
+                  { label: "지프 / SUV", price: "+ ₩450,000" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "signature",
+        title: "Premium Hand Wash",
+        price: "From ₩250,000",
+        description: "차량 내/외부의 오염을 안전하게 제거하고 본연의 색감과 광택을 끌어올리는 프리미엄 세차 서비스입니다.",
+        image: "https://images.unsplash.com/photo-1601362840469-82e058f82400?q=80&w=2000&auto=format&fit=crop",
+        order: 4,
+        features: [
+          "프리워시 및 스노우폼 세차",
+          "철분 및 타르 제거",
+          "프리미엄 카나우바 왁스 코팅",
+          "실내 진공 청소 및 가죽 클리닝",
+          "엔진룸 기본 클리닝"
+        ],
+        pricing: [
+          {
+            title: "프리미엄 핸드워시 (Premium Hand Wash)",
+            price: "₩95,000",
+            features: [
+              "2버킷 방식의 안전한 미트질",
+              "도어 힌지 및 틈새 정밀 세정",
+              "휠, 타이어, 휠하우스 클리닝",
+              "에어 드라잉 및 극세사 타월 건조",
+              "스프레이 왁스 또는 실런트 코팅",
+              "타이어 드레싱"
+            ]
+          },
+          {
+            title: "프리미엄 핸드워시 + 베이직 인테리어",
+            price: "₩175,000",
+            features: [
+              "프리미엄 핸드워시 모든 공정 포함",
+              "실내 진공 청소 및 먼지 제거",
+              "유리 및 거울 정밀 세정"
+            ]
+          },
+          {
+            title: "디컨타미네이션 핸드워시",
+            price: "₩125,000",
+            features: [
+              "프리미엄 핸드워시 모든 공정 포함",
+              "타르 및 철분 제거 (낙진 제거)",
+              "클레이바 작업 (필요 시)"
+            ]
+          }
         ]
       }
     ];

@@ -1,28 +1,27 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { CheckCircle2 } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { CheckCircle2, ArrowDown } from "lucide-react";
+import { useLocation, Link } from "react-router-dom";
 import { subscribeServices, Service } from "@/lib/store";
+import { cn } from "@/lib/utils";
 
 export default function Services() {
   const [services, setServices] = useState<Service[]>([]);
   const { hash } = useLocation();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     return subscribeServices((items) => {
       setServices(items);
     });
   }, []);
 
-  useEffect(() => {
-    if (hash && services.length > 0) {
-      const id = hash.replace("#", "");
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, [hash, services]);
+  const shortDescriptions: Record<string, string> = {
+    "interior": "실내 정밀 세정 및 가죽 보호 케어",
+    "paint": "스크래치 제거 및 도장면 광택 최적화",
+    "ceramic": "최상급 세라믹 코팅 보호막 형성",
+    "signature": "전문적인 프리미엄 세차 서비스"
+  };
 
   if (services.length === 0) {
     return (
@@ -33,81 +32,66 @@ export default function Services() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-24">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="mb-20 text-center"
-      >
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase mb-6">
-          Services
-        </h1>
-        <p className="text-xl text-black/50 font-light max-w-2xl mx-auto">
-          차량의 상태와 고객의 니즈에 맞춘 세분화된 프리미엄 케어 솔루션.
-          최고의 결과물을 위해 타협하지 않는 공정을 거칩니다.
-        </p>
-      </motion.div>
+    <div className="w-full">
+      {/* Header Section */}
+      <section className="max-w-7xl mx-auto px-6 py-24 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-5xl md:text-8xl font-bold tracking-tighter uppercase mb-8">
+            Our Services
+          </h1>
+          <p className="text-xl text-black/50 font-light max-w-2xl mx-auto leading-relaxed">
+            차량의 가치를 보존하고 본연의 아름다움을 극대화하는 <br className="hidden md:block" />
+            CHO DETAILING만의 하이엔드 케어 솔루션을 확인해 보세요.
+          </p>
+        </motion.div>
+      </section>
 
-      <div className="space-y-24">
-        {services.map((service, idx) => (
-          <motion.div
-            key={service.id}
-            id={service.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center scroll-mt-32"
-          >
-            <div className={idx % 2 === 1 ? "lg:order-2" : ""}>
-              <motion.div 
-                initial={{ scale: 1.05, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                className="aspect-[4/3] bg-black/5 overflow-hidden rounded-sm shadow-2xl"
-              >
+      {/* Services Grid Navigation */}
+      <section className="max-w-7xl mx-auto px-6 mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {services.map((service) => (
+            <Link
+              key={service.id}
+              to={`/services/${service.id}`}
+              className="group relative h-[300px] md:h-[350px] lg:h-[400px] overflow-hidden rounded-2xl md:rounded-3xl block text-left shadow-lg hover:shadow-xl transition-all duration-500"
+            >
+              <div className="absolute inset-0 z-0">
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
-              </motion.div>
-            </div>
-            
-            <div className={idx % 2 === 1 ? "lg:order-1" : ""}>
-              <motion.div
-                initial={{ x: idx % 2 === 1 ? 20 : -20, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                <h2 className="text-4xl md:text-6xl font-bold tracking-tighter uppercase mb-6 leading-none">
-                  {service.title}
-                </h2>
-                <div className="w-20 h-1 bg-black mb-8" />
-                <p className="text-xl font-light tracking-[0.2em] text-black/40 mb-8 uppercase italic">
-                  {service.price}
-                </p>
-                <p className="text-lg text-black/70 leading-relaxed mb-10 max-w-xl font-light">
-                  {service.description}
-                </p>
+                {/* Base dark overlay */}
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
                 
-                <ul className="space-y-5">
-                  {service.features.map((feature, fIdx) => (
-                    <li key={fIdx} className="flex items-start gap-4 text-black/80 group">
-                      <CheckCircle2 size={20} className="text-black shrink-0 mt-1 opacity-40 group-hover:opacity-100 transition-opacity" strokeWidth={1.5} />
-                      <span className="text-lg font-light tracking-tight">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+                {/* Consistent Pastel Blue Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-sky-400/60 via-sky-200/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+              
+              <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 md:p-8 text-white">
+                <div className="relative z-20">
+                  <h3 className="text-xl md:text-2xl lg:text-4xl font-bold mb-2 md:mb-3 tracking-tight drop-shadow-md">
+                    {service.title}
+                  </h3>
+                  <div className="overflow-hidden">
+                    <p className="text-xs md:text-sm lg:text-base text-white/90 font-light leading-relaxed transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out opacity-0 group-hover:opacity-100 max-w-lg">
+                      {shortDescriptions[service.id] || service.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Mobile-only persistent gradient for readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:hidden" />
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

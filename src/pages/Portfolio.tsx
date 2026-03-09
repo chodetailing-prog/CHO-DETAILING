@@ -13,6 +13,7 @@ export default function Portfolio() {
       setPortfolioItems(items);
     };
     loadItems();
+    window.scrollTo(0, 0);
   }, []);
 
   return (

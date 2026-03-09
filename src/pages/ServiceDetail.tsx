@@ -48,9 +48,9 @@ export default function ServiceDetail() {
         animate={{ opacity: 1, x: 0 }}
         className="mb-12"
       >
-        <Link to="/" className="inline-flex items-center gap-2 text-black/40 hover:text-black transition-colors group">
+        <Link to="/services" className="inline-flex items-center gap-2 text-black/40 hover:text-black transition-colors group">
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-sm font-medium tracking-widest uppercase">Back</span>
+          <span className="text-sm font-medium tracking-widest uppercase">Back to Services</span>
         </Link>
       </motion.div>
 
@@ -97,6 +97,63 @@ export default function ServiceDetail() {
               ))}
             </ul>
           </div>
+
+          {service.pricing && service.pricing.length > 0 && (
+            <div className="mt-24 space-y-16">
+              <h3 className="text-xs font-bold tracking-[0.4em] uppercase text-black/30 border-b border-black/5 pb-4">Detailed Pricing</h3>
+              <div className="space-y-12">
+                {service.pricing.map((plan, pIdx) => (
+                  <div key={pIdx} className="group">
+                    <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4 mb-6">
+                      <h4 className="text-2xl md:text-3xl font-bold tracking-tight text-black group-hover:translate-x-2 transition-transform duration-300">
+                        {plan.title}
+                      </h4>
+                      {plan.price && (
+                        <span className="text-xl font-light tracking-widest text-black/40 italic">
+                          {plan.price}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {plan.description && (
+                      <p className="text-lg text-black/60 font-light mb-8 leading-relaxed">
+                        {plan.description}
+                      </p>
+                    )}
+
+                    {plan.features && (
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        {plan.features.map((item, iIdx) => (
+                          <li key={iIdx} className="flex items-center gap-3 text-sm text-black/70">
+                            <div className="w-1 h-1 bg-black/20 rounded-full" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {plan.categories && (
+                      <div className="bg-black/[0.02] p-8 rounded-sm space-y-6">
+                        {plan.categories.map((cat, cIdx) => (
+                          <div key={cIdx} className="space-y-4">
+                            <h5 className="text-[10px] font-bold tracking-[0.2em] uppercase text-black/30">{cat.title}</h5>
+                            <div className="space-y-3">
+                              {cat.items.map((item, iIdx) => (
+                                <div key={iIdx} className="flex justify-between items-center border-b border-black/5 pb-3 last:border-0 last:pb-0">
+                                  <span className="text-sm font-medium text-black/80">{item.label}</span>
+                                  <span className="text-sm font-bold tracking-wider text-black">{item.price}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="mt-16 pt-12 border-t border-black/5">
             <Link 

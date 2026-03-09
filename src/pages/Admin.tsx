@@ -39,6 +39,7 @@ export default function Admin() {
   const serviceImageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const authStatus = localStorage.getItem("adminAuth");
     if (authStatus === "true") {
       setIsAuthenticated(true);
@@ -67,6 +68,7 @@ export default function Admin() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    window.scrollTo(0, 0);
     if (password === "041018") {
       localStorage.setItem("adminAuth", "true");
       setIsAuthenticated(true);
@@ -171,7 +173,8 @@ export default function Admin() {
       price: currentService.price || "",
       description: currentService.description || "",
       image: currentService.image || "",
-      features: currentService.features || []
+      features: currentService.features || [],
+      order: currentService.order || (services.length + 1)
     };
 
     try {
