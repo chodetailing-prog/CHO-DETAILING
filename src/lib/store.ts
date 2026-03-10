@@ -262,39 +262,50 @@ export async function seedPortfolioItems() {
       {
         id: "interior",
         title: "Interior Detailing",
-        price: "From ₩150,000",
-        description: "단순한 세차를 넘어 실내의 모든 오염 요소를 제거하고 신차 수준의 쾌적함을 복원합니다. 고온 스팀 살균과 천연 가죽 케어 시스템을 통해 보이지 않는 세균까지 완벽하게 케어합니다.",
+        price: "₩150,000부터",
+        description: "실내 전체와 트렁크 공간에 대한 정밀 스팀/딥 클리닝 서비스를 제공합니다. 가죽 시트는 pH 중성 세정제로 정밀 세척 후 전용 컨디셔너로 영양을 공급하며, 카페트와 직물 시트는 샴푸 추출 방식을 통해 깊은 곳의 오염까지 제거합니다. 대시보드, 센터콘솔, 도어 패널은 세정 후 전용 드레싱으로 보호하여 신차 본연의 질감을 되살립니다. 모든 유리는 잔사 없이 투명하게 세정됩니다.",
         image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop",
         order: 1,
         features: [
-          "고온 스팀 살균 및 틈새 정밀 세척",
-          "프리미엄 가죽 클리닝 & 컨디셔닝 (PH 밸런스 케어)",
-          "천장 및 바닥 카페트 딥 클리닝 (오염 및 얼룩 제거)",
-          "실내 냄새 제거 및 오존 살균 탈취",
-          "대시보드, 도어 트림 UV 보호제 도포",
-          "에어컨 송풍구 정밀 클리닝"
+          "실내 및 트렁크 정밀 스팀/딥 클리닝",
+          "pH 중성 가죽 세정 및 컨디셔닝",
+          "카페트, 매트, 직물 시트 샴푸 추출 세정",
+          "대시보드, 센터콘솔, 도어 패널 세정 및 UV 보호 드레싱",
+          "유리 잔사 없는 정밀 세정",
+          "오존 살균 탈취 (선택 사항)",
+          "천장(헤드라이너) 정밀 세정 (선택 사항)"
         ],
         pricing: [
           {
-            title: "인테리어 디테일링 (Deep Cleaning)",
-            price: "별도 문의",
-            description: "실내 전체 및 트렁크 공간에 대한 정밀 스팀 살균 세정 서비스입니다.",
+            title: "실내 정밀 딥 클리닝 (Deep Cleaning)",
+            price: "₩150,000부터",
+            description: "대시보드, 센터콘솔, 도어 패널 세정 및 가죽/직물 시트 정밀 클리닝을 포함한 전체 실내 케어 서비스입니다.",
             features: [
               "대시보드, 센터콘솔, 도어패널 정밀 세정",
               "가죽 시트 클리닝 및 컨디셔닝 (영양 공급)",
-              "패브릭 시트 딥클리닝 (샴푸 추출 방식)",
+              "직물 시트 딥클리닝 (샴푸 추출 방식)",
               "바닥 매트 및 카페트 딥클리닝",
               "플라스틱 부품 UV 보호 및 드레싱",
-              "유리 세정 (잔사 없는 투명함)"
+              "유리 정밀 세정 (잔사 없는 투명함)"
             ]
           },
           {
             title: "오존 살균 탈취 (Ozone Treatment)",
-            description: "실내의 불쾌한 냄새를 근본적으로 제거하는 살균 탈취 서비스입니다.",
+            price: "₩50,000",
+            description: "실내의 불쾌한 냄새를 근본적으로 제거하는 살균 탈취 서비스입니다. (실내 클리닝 시 추가 가능)",
             features: [
               "실내 악취 원인균 제거",
               "오존 가스를 이용한 구석구석 정밀 살균",
               "담배 냄새, 곰팡이 냄새 등 중화"
+            ]
+          },
+          {
+            title: "천장(헤드라이너) 정밀 세정",
+            price: "₩80,000부터",
+            description: "특수 세정제를 사용하여 천장의 얼룩과 오염을 제거하는 서비스입니다. 가격은 오염도에 따라 상이할 수 있습니다.",
+            features: [
+              "특수 세정제를 이용한 오염 제거",
+              "오염도에 따른 맞춤형 클리닝"
             ]
           }
         ]
@@ -347,7 +358,7 @@ export async function seedPortfolioItems() {
         title: "Ceramic Coating",
         price: "From ₩800,000",
         description: "최상급 세라믹 코팅제를 도포하여 도장면을 보호하고, 강력한 발수력과 방오성을 부여하여 차량 관리를 수월하게 합니다.",
-        image: "https://images.unsplash.com/photo-1552689486-f6773047d19f?q=80&w=2000&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop",
         order: 3,
         features: [
           "Paint Correction 공정 포함",
@@ -403,7 +414,7 @@ export async function seedPortfolioItems() {
         title: "Premium Hand Wash",
         price: "From ₩250,000",
         description: "차량 내/외부의 오염을 안전하게 제거하고 본연의 색감과 광택을 끌어올리는 프리미엄 세차 서비스입니다.",
-        image: "https://images.unsplash.com/photo-1601362840469-82e058f82400?q=80&w=2000&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1605515298946-d062f2e9da53?q=80&w=2000&auto=format&fit=crop",
         order: 4,
         features: [
           "프리워시 및 스노우폼 세차",
@@ -456,39 +467,50 @@ export async function seedPortfolioItems() {
       {
         id: "interior",
         title: "Interior Detailing",
-        price: "From ₩150,000",
-        description: "단순한 세차를 넘어 실내의 모든 오염 요소를 제거하고 신차 수준의 쾌적함을 복원합니다. 고온 스팀 살균과 천연 가죽 케어 시스템을 통해 보이지 않는 세균까지 완벽하게 케어합니다.",
+        price: "₩150,000부터",
+        description: "실내 전체와 트렁크 공간에 대한 정밀 스팀/딥 클리닝 서비스를 제공합니다. 가죽 시트는 pH 중성 세정제로 정밀 세척 후 전용 컨디셔너로 영양을 공급하며, 카페트와 직물 시트는 샴푸 추출 방식을 통해 깊은 곳의 오염까지 제거합니다. 대시보드, 센터콘솔, 도어 패널은 세정 후 전용 드레싱으로 보호하여 신차 본연의 질감을 되살립니다. 모든 유리는 잔사 없이 투명하게 세정됩니다.",
         image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop",
         order: 1,
         features: [
-          "고온 스팀 살균 및 틈새 정밀 세척",
-          "프리미엄 가죽 클리닝 & 컨디셔닝 (PH 밸런스 케어)",
-          "천장 및 바닥 카페트 딥 클리닝 (오염 및 얼룩 제거)",
-          "실내 냄새 제거 및 오존 살균 탈취",
-          "대시보드, 도어 트림 UV 보호제 도포",
-          "에어컨 송풍구 정밀 클리닝"
+          "실내 및 트렁크 정밀 스팀/딥 클리닝",
+          "pH 중성 가죽 세정 및 컨디셔닝",
+          "카페트, 매트, 직물 시트 샴푸 추출 세정",
+          "대시보드, 센터콘솔, 도어 패널 세정 및 UV 보호 드레싱",
+          "유리 잔사 없는 정밀 세정",
+          "오존 살균 탈취 (선택 사항)",
+          "천장(헤드라이너) 정밀 세정 (선택 사항)"
         ],
         pricing: [
           {
-            title: "인테리어 디테일링 (Deep Cleaning)",
-            price: "별도 문의",
-            description: "실내 전체 및 트렁크 공간에 대한 정밀 스팀 살균 세정 서비스입니다.",
+            title: "실내 정밀 딥 클리닝 (Deep Cleaning)",
+            price: "₩150,000부터",
+            description: "대시보드, 센터콘솔, 도어 패널 세정 및 가죽/직물 시트 정밀 클리닝을 포함한 전체 실내 케어 서비스입니다.",
             features: [
               "대시보드, 센터콘솔, 도어패널 정밀 세정",
               "가죽 시트 클리닝 및 컨디셔닝 (영양 공급)",
-              "패브릭 시트 딥클리닝 (샴푸 추출 방식)",
+              "직물 시트 딥클리닝 (샴푸 추출 방식)",
               "바닥 매트 및 카페트 딥클리닝",
               "플라스틱 부품 UV 보호 및 드레싱",
-              "유리 세정 (잔사 없는 투명함)"
+              "유리 정밀 세정 (잔사 없는 투명함)"
             ]
           },
           {
             title: "오존 살균 탈취 (Ozone Treatment)",
-            description: "실내의 불쾌한 냄새를 근본적으로 제거하는 살균 탈취 서비스입니다.",
+            price: "₩50,000",
+            description: "실내의 불쾌한 냄새를 근본적으로 제거하는 살균 탈취 서비스입니다. (실내 클리닝 시 추가 가능)",
             features: [
               "실내 악취 원인균 제거",
               "오존 가스를 이용한 구석구석 정밀 살균",
               "담배 냄새, 곰팡이 냄새 등 중화"
+            ]
+          },
+          {
+            title: "천장(헤드라이너) 정밀 세정",
+            price: "₩80,000부터",
+            description: "특수 세정제를 사용하여 천장의 얼룩과 오염을 제거하는 서비스입니다. 가격은 오염도에 따라 상이할 수 있습니다.",
+            features: [
+              "특수 세정제를 이용한 오염 제거",
+              "오염도에 따른 맞춤형 클리닝"
             ]
           }
         ]
@@ -541,7 +563,7 @@ export async function seedPortfolioItems() {
         title: "Ceramic Coating",
         price: "From ₩800,000",
         description: "최상급 세라믹 코팅제를 도포하여 도장면을 보호하고, 강력한 발수력과 방오성을 부여하여 차량 관리를 수월하게 합니다.",
-        image: "https://images.unsplash.com/photo-1552689486-f6773047d19f?q=80&w=2000&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop",
         order: 3,
         features: [
           "Paint Correction 공정 포함",
@@ -597,7 +619,7 @@ export async function seedPortfolioItems() {
         title: "Premium Hand Wash",
         price: "From ₩250,000",
         description: "차량 내/외부의 오염을 안전하게 제거하고 본연의 색감과 광택을 끌어올리는 프리미엄 세차 서비스입니다.",
-        image: "https://images.unsplash.com/photo-1601362840469-82e058f82400?q=80&w=2000&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1605515298946-d062f2e9da53?q=80&w=2000&auto=format&fit=crop",
         order: 4,
         features: [
           "프리워시 및 스노우폼 세차",

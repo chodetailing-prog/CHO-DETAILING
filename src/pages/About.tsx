@@ -11,21 +11,22 @@ export default function About() {
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="relative h-[60vh] flex items-center justify-center bg-black overflow-hidden">
+      <section className="relative h-[40vh] md:h-[60vh] flex items-center justify-center bg-black overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1599256621730-535171e28e50?q=80&w=2000&auto=format&fit=crop"
+            src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop"
             alt="About CHO DETAILING"
-            className="w-full h-full object-cover opacity-50"
+            className="w-full h-full object-cover opacity-40 md:opacity-50"
             referrerPolicy="no-referrer"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50 md:hidden" />
         </div>
         <div className="relative z-10 text-center text-white px-6">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-8xl font-bold tracking-tighter uppercase mb-6"
+            className="text-4xl md:text-8xl font-bold tracking-tighter uppercase mb-4 md:mb-6"
           >
             About Us
           </motion.h1>
@@ -33,9 +34,9 @@ export default function About() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-2xl font-light tracking-widest uppercase text-white/80"
+            className="text-base md:text-2xl font-light tracking-widest uppercase text-white/90 md:text-white/80"
           >
-            하이엔드 자동차 디테일링의 새로운 기준
+            하이엔드 자동차 디테일링의 <br className="md:hidden" /> 새로운 기준
           </motion.p>
         </div>
       </section>
@@ -78,8 +79,8 @@ export default function About() {
             className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl"
           >
             <img
-              src="https://images.unsplash.com/photo-1507133359963-3a8126e8620b?q=80&w=2000&auto=format&fit=crop"
-              alt="Detailing Process"
+              src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?q=80&w=2000&auto=format&fit=crop"
+              alt="Ceramic Coating Process"
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />

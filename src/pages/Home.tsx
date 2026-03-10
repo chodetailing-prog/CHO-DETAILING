@@ -71,7 +71,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-lg md:text-2xl font-light tracking-widest uppercase text-white/80 max-w-2xl mx-auto"
           >
-            하이엔드 자동차 디테일링의 새로운 기준
+            하이엔드 자동차 디테일링의 <br className="md:hidden" /> 새로운 기준
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -117,8 +117,8 @@ export default function Home() {
             {[
               { id: "interior", title: "Interior Detailing", desc: "실내 정밀 세정 및 가죽 보호 케어", img: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop" },
               { id: "paint", title: "Paint Correction", desc: "스크래치 제거 및 도장면 광택 최적화", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop" },
-              { id: "ceramic", title: "Ceramic Coating", desc: "최상급 세라믹 코팅 보호막 형성", img: "https://images.unsplash.com/photo-1552689486-f6773047d19f?q=80&w=2000&auto=format&fit=crop" },
-              { id: "signature", title: "Premium Hand Wash", desc: "전문적인 프리미엄 세차 서비스", img: "https://images.unsplash.com/photo-1601362840469-82e058f82400?q=80&w=2000&auto=format&fit=crop" }
+              { id: "ceramic", title: "Ceramic Coating", desc: "최상급 세라믹 코팅 보호막 형성", img: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop" },
+              { id: "signature", title: "Premium Hand Wash", desc: "전문적인 프리미엄 세차 서비스", img: "https://images.unsplash.com/photo-1605515298946-d062f2e9da53?q=80&w=2000&auto=format&fit=crop" }
             ].map((service) => (
               <Link 
                 key={service.id} 
