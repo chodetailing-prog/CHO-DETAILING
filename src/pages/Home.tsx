@@ -15,7 +15,29 @@ export default function Home() {
       setHeroImage(image);
       
       const items = await getPortfolioItems();
-      setRecentWorks(items.slice(0, 2));
+      if (items.length > 0) {
+        setRecentWorks(items.slice(0, 2));
+      } else {
+        // Fallback examples if DB is empty
+        setRecentWorks([
+          {
+            id: "1",
+            title: "Porsche 911 GT3 - Full Detail",
+            category: "Ceramic Coating",
+            image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
+            images: [],
+            date: "2024-03-01"
+          },
+          {
+            id: "2",
+            title: "Mercedes-Benz G-Wagon - Interior",
+            category: "Interior Detail",
+            image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?q=80&w=2070&auto=format&fit=crop",
+            images: [],
+            date: "2024-02-15"
+          }
+        ]);
+      }
     };
     
     loadData();
