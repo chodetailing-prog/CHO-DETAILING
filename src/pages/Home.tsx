@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PortfolioItem, getPortfolioItems, getHeroImage } from "@/lib/store";
+import { PortfolioItem, getPortfolioItems, getHeroImage, getServices, Service } from "@/lib/store";
 
 export default function Home() {
   const [heroImage, setHeroImage] = useState("https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=2069&auto=format&fit=crop");
   const [recentWorks, setRecentWorks] = useState<PortfolioItem[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,6 +36,18 @@ export default function Home() {
             images: [],
             date: "2024-02-15"
           }
+        ]);
+      }
+
+      const fetchedServices = await getServices();
+      if (fetchedServices.length > 0) {
+        setServices(fetchedServices.slice(0, 4));
+      } else {
+        setServices([
+          { id: "interior", title: "Interior Detailing", description: "실내 정밀 세정 및 가죽 보호 케어", image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop", price: "", order: 1, features: [] },
+          { id: "paint", title: "Paint Correction", description: "스크래치 제거 및 도장면 광택 최적화", image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop", price: "", order: 2, features: [] },
+          { id: "ceramic", title: "Ceramic Coating", description: "최상급 세라믹 코팅 보호막 형성", image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop", price: "", order: 3, features: [] },
+          { id: "signature", title: "Premium Hand Wash", description: "전문적인 프리미엄 세차 서비스", image: "https://images.unsplash.com/photo-1605515298946-d062f2e9da53?q=80&w=2000&auto=format&fit=crop", price: "", order: 4, features: [] }
         ]);
       }
     };
@@ -79,12 +91,12 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="mt-12"
           >
-            <Link
-              to="/portfolio"
+            <a
+              href="/portfolio"
               className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-medium tracking-widest uppercase hover:bg-black hover:text-white border border-white transition-all duration-300"
             >
               View Portfolio <ArrowRight size={20} />
-            </Link>
+            </a>
           </motion.div>
         </div>
       </section>
@@ -114,20 +126,15 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { id: "interior", title: "Interior Detailing", desc: "실내 정밀 세정 및 가죽 보호 케어", img: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop" },
-              { id: "paint", title: "Paint Correction", desc: "스크래치 제거 및 도장면 광택 최적화", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop" },
-              { id: "ceramic", title: "Ceramic Coating", desc: "최상급 세라믹 코팅 보호막 형성", img: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop" },
-              { id: "signature", title: "Premium Hand Wash", desc: "전문적인 프리미엄 세차 서비스", img: "https://images.unsplash.com/photo-1605515298946-d062f2e9da53?q=80&w=2000&auto=format&fit=crop" }
-            ].map((service) => (
-              <Link 
+            {services.map((service) => (
+              <a 
                 key={service.id} 
-                to={`/services/${service.id}`}
+                href={`/services/${service.id}`}
                 className="group relative h-[240px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-2xl md:rounded-3xl block shadow-lg"
               >
                 <div className="absolute inset-0 z-0">
                   <img
-                    src={service.img}
+                    src={service.image}
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                     referrerPolicy="no-referrer"
@@ -145,8 +152,8 @@ export default function Home() {
                       {service.title}
                     </h3>
                     <div className="overflow-hidden">
-                      <p className="text-xs md:text-sm lg:text-base text-white font-medium leading-snug transform translate-y-full group-hover:translate-y-0 group-active:translate-y-0 transition-transform duration-500 ease-out opacity-0 group-hover:opacity-100 group-active:opacity-100">
-                        {service.desc}
+                      <p className="text-xs md:text-sm lg:text-base text-white font-medium leading-snug transform translate-y-full group-hover:translate-y-0 group-active:translate-y-0 transition-transform duration-500 ease-out opacity-0 group-hover:opacity-100 group-active:opacity-100 line-clamp-2">
+                        {service.description}
                       </p>
                     </div>
                   </div>
@@ -154,17 +161,17 @@ export default function Home() {
                 
                 {/* Mobile-only persistent gradient for readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:hidden" />
-              </Link>
+              </a>
             ))}
           </div>
           
           <div className="mt-16 text-center">
-            <Link 
-              to="/services" 
+            <a 
+              href="/services" 
               className="inline-block px-10 py-4 bg-black text-white text-sm font-bold tracking-[0.3em] uppercase hover:bg-black/80 transition-all rounded-full"
             >
               View All Services
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -174,14 +181,14 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between items-end mb-16">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">RECENT WORK</h2>
-            <Link to="/portfolio" className="text-sm font-medium tracking-widest uppercase hover:text-black/60 transition-colors flex items-center gap-2">
+            <a href="/portfolio" className="text-sm font-medium tracking-widest uppercase hover:text-black/60 transition-colors flex items-center gap-2">
               All Works <ArrowRight size={16} />
-            </Link>
+            </a>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {recentWorks.map((item) => (
-              <Link to={`/portfolio/${item.id}`} key={item.id} className="group block overflow-hidden">
+              <a href={`/portfolio/${item.id}`} key={item.id} className="group block overflow-hidden">
                 <div className="aspect-[4/3] overflow-hidden bg-black/10">
                   <img
                     src={item.image}
@@ -194,7 +201,7 @@ export default function Home() {
                   <h3 className="text-xl font-bold tracking-tight">{item.title}</h3>
                   <p className="text-black/50 mt-2">{item.category}</p>
                 </div>
-              </Link>
+              </a>
             ))}
           </div>
         </div>

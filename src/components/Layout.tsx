@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, Instagram, Youtube, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -36,18 +36,12 @@ export default function Layout() {
       {/* Navbar */}
       <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-black/5">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link 
-            to="/" 
+          <a 
+            href="/" 
             className="text-xl font-bold tracking-widest uppercase"
-            onClick={(e) => {
-              if (location.pathname === "/") {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }
-            }}
           >
             CHO DETAILING
-          </Link>
+          </a>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex md:landscape:flex items-center gap-8">
@@ -60,22 +54,15 @@ export default function Layout() {
               >
                 {link.dropdown ? (
                   <div className="flex items-center gap-1 cursor-pointer">
-                    <Link
-                      to={link.path}
-                      onClick={(e) => {
-                        if (location.pathname === link.path) {
-                          e.preventDefault();
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }
-                        setIsServicesDropdownOpen(false);
-                      }}
+                    <a
+                      href={link.path}
                       className={cn(
                         "text-sm font-medium tracking-widest transition-colors hover:text-black/60",
                         location.pathname.startsWith(link.path) ? "text-black" : "text-black/40"
                       )}
                     >
                       {link.name}
-                    </Link>
+                    </a>
                     <ChevronDown size={14} className={cn("transition-transform duration-200 text-black/40", isServicesDropdownOpen && "rotate-180")} />
                     
                     {/* Dropdown Menu */}
@@ -89,41 +76,28 @@ export default function Layout() {
                           className="absolute top-full left-0 mt-2 w-56 bg-white border border-black/5 shadow-xl py-4 z-50 rounded-lg overflow-hidden"
                         >
                           {link.dropdown.map((item) => (
-                            <Link
+                            <a
                               key={item.path}
-                              to={item.path}
+                              href={item.path}
                               className="block px-6 py-3 text-sm font-medium tracking-widest text-black/60 hover:text-black hover:bg-black/5 transition-colors"
-                              onClick={(e) => {
-                                if (location.pathname === item.path) {
-                                  e.preventDefault();
-                                  window.scrollTo({ top: 0, behavior: "smooth" });
-                                }
-                                setIsServicesDropdownOpen(false);
-                              }}
                             >
                               {item.name}
-                            </Link>
+                            </a>
                           ))}
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link
-                    to={link.path}
-                    onClick={(e) => {
-                      if (location.pathname === link.path) {
-                        e.preventDefault();
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      }
-                    }}
+                  <a
+                    href={link.path}
                     className={cn(
                       "text-sm font-medium tracking-widest transition-colors hover:text-black/60",
                       location.pathname === link.path ? "text-black" : "text-black/40"
                     )}
                   >
                     {link.name}
-                  </Link>
+                  </a>
                 )}
               </div>
             ))}
@@ -173,39 +147,25 @@ export default function Layout() {
                 <div key={link.path} className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     {link.dropdown ? (
-                      <Link
-                        to={link.path}
-                        onClick={(e) => {
-                          if (location.pathname === link.path) {
-                            e.preventDefault();
-                            window.scrollTo({ top: 0, behavior: "smooth" });
-                            setIsMobileMenuOpen(false);
-                          }
-                        }}
+                      <a
+                        href={link.path}
                         className={cn(
                           "transition-colors",
                           location.pathname.startsWith(link.path) ? "text-black font-medium" : "text-black/40"
                         )}
                       >
                         {link.name}
-                      </Link>
+                      </a>
                     ) : (
-                      <Link
-                        to={link.path}
-                        onClick={(e) => {
-                          if (location.pathname === link.path) {
-                            e.preventDefault();
-                            window.scrollTo({ top: 0, behavior: "smooth" });
-                            setIsMobileMenuOpen(false);
-                          }
-                        }}
+                      <a
+                        href={link.path}
                         className={cn(
                           "transition-colors",
                           location.pathname === link.path ? "text-black font-medium" : "text-black/40"
                         )}
                       >
                         {link.name}
-                      </Link>
+                      </a>
                     )}
                     {link.dropdown && (
                       <button 
@@ -227,17 +187,13 @@ export default function Layout() {
                           className="flex flex-col gap-4 pl-6 overflow-hidden"
                         >
                           {link.dropdown.map((item) => (
-                            <Link
+                            <a
                               key={item.path}
-                              to={item.path}
+                              href={item.path}
                               className="text-lg text-black/40 hover:text-black transition-colors"
-                              onClick={() => {
-                                setIsMobileMenuOpen(false);
-                                setIsServicesDropdownOpen(false);
-                              }}
                             >
                               {item.name}
-                            </Link>
+                            </a>
                           ))}
                         </motion.div>
                       )}
@@ -317,11 +273,11 @@ export default function Layout() {
             <div className="space-y-6">
               <h3 className="text-sm font-bold tracking-widest uppercase text-white">링크</h3>
               <nav className="flex flex-col gap-3 text-sm font-light text-white/60">
-                <Link to="/about" className="hover:text-white transition-colors" onClick={() => window.scrollTo(0, 0)}>회사 소개</Link>
-                <Link to="/payment-policy" className="hover:text-white transition-colors" onClick={() => window.scrollTo(0, 0)}>지불</Link>
-                <Link to="/general-terms" className="hover:text-white transition-colors" onClick={() => window.scrollTo(0, 0)}>일반 약관</Link>
-                <Link to="/privacy-policy" className="hover:text-white transition-colors" onClick={() => window.scrollTo(0, 0)}>개인정보 보호정책</Link>
-                <Link to="/contact" className="hover:text-white transition-colors" onClick={() => window.scrollTo(0, 0)}>연락</Link>
+                <a href="/about" className="hover:text-white transition-colors">회사 소개</a>
+                <a href="/payment-policy" className="hover:text-white transition-colors">지불</a>
+                <a href="/general-terms" className="hover:text-white transition-colors">일반 약관</a>
+                <a href="/privacy-policy" className="hover:text-white transition-colors">개인정보 보호정책</a>
+                <a href="/contact" className="hover:text-white transition-colors">연락</a>
               </nav>
             </div>
           </div>
@@ -341,7 +297,7 @@ export default function Layout() {
                 </a>
               </div>
               <div className="h-4 w-px bg-white/10 hidden md:block" />
-              <Link to="/admin" className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase hover:text-white transition-colors">Admin Access</Link>
+              <a href="/admin" className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase hover:text-white transition-colors">Admin Access</a>
             </div>
           </div>
         </div>
