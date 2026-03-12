@@ -5,12 +5,45 @@ import { ArrowRight } from "lucide-react";
 import { PortfolioItem, getPortfolioItems } from "@/lib/store";
 
 export default function Portfolio() {
-  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const fallbackData = [
+    {
+      id: "1",
+      title: "Porsche 911 GT3 - Full Detail & Ceramic Coating",
+      category: "Ceramic Coating",
+      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
+      images: [],
+      date: "2024-03-01"
+    },
+    {
+      id: "2",
+      title: "Mercedes-Benz G-Wagon - Interior Restoration",
+      category: "Interior Detail",
+      image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?q=80&w=2070&auto=format&fit=crop",
+      images: [],
+      date: "2024-02-15"
+    },
+    {
+      id: "3",
+      title: "BMW M4 - Paint Correction & PPF",
+      category: "Paint Correction",
+      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop",
+      images: [],
+      date: "2024-01-20"
+    }
+  ];
+
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>(fallbackData);
 
   useEffect(() => {
     const loadItems = async () => {
-      const items = await getPortfolioItems();
-      setPortfolioItems(items);
+      try {
+        const items = await getPortfolioItems();
+        if (items && items.length > 0) {
+          setPortfolioItems(items);
+        }
+      } catch (error) {
+        console.error("Portfolio loadItems error:", error);
+      }
     };
     loadItems();
     window.scrollTo(0, 0);

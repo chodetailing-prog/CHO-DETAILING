@@ -6,14 +6,61 @@ import { subscribeServices, Service } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 export default function Services() {
-  const [services, setServices] = useState<Service[]>([]);
+  const fallbackData = [
+    { 
+      id: "interior", 
+      title: "Interior Detailing", 
+      description: "실내 정밀 세정 및 가죽 보호 케어", 
+      image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop", 
+      price: "₩150,000부터", 
+      order: 1, 
+      features: ["실내 정밀 클리닝", "가죽 컨디셔닝"] 
+    },
+    { 
+      id: "paint", 
+      title: "Paint Correction", 
+      description: "스크래치 제거 및 도장면 광택 최적화", 
+      image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop", 
+      price: "From ₩600,000", 
+      order: 2, 
+      features: ["수성 광택", "결함 제거"] 
+    },
+    { 
+      id: "ceramic", 
+      title: "Ceramic Coating", 
+      description: "최상급 세라믹 코팅 보호막 형성", 
+      image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop", 
+      price: "From ₩800,000", 
+      order: 3, 
+      features: ["9H 경도 코팅", "발수 보호"] 
+    },
+    { 
+      id: "signature", 
+      title: "Premium Hand Wash", 
+      description: "전문적인 프리미엄 세차 서비스", 
+      image: "https://images.unsplash.com/photo-1605515298946-d062f2e9da53?q=80&w=2000&auto=format&fit=crop", 
+      price: "From ₩250,000", 
+      order: 4, 
+      features: ["스노우폼 세차", "왁스 코팅"] 
+    }
+  ];
+
+  const [services, setServices] = useState<Service[]>(fallbackData);
   const { hash } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    return subscribeServices((items) => {
-      setServices(items);
-    });
+
+    try {
+      const unsubscribe = subscribeServices((items) => {
+        if (items && items.length > 0) {
+          setServices(items);
+        }
+      });
+      return () => unsubscribe();
+    } catch (error) {
+      console.error("Services subscribe error:", error);
+    }
   }, []);
 
   const shortDescriptions: Record<string, string> = {
@@ -22,14 +69,6 @@ export default function Services() {
     "ceramic": "최상급 세라믹 코팅 보호막 형성",
     "signature": "전문적인 프리미엄 세차 서비스"
   };
-
-  if (services.length === 0) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="animate-pulse text-black/30 tracking-widest uppercase">Loading Services...</div>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full">

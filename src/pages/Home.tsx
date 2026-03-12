@@ -5,50 +5,53 @@ import { cn } from "@/lib/utils";
 import { PortfolioItem, getPortfolioItems, getHeroImage, getServices, Service } from "@/lib/store";
 
 export default function Home() {
+  const fallbackRecentWorks = [
+    {
+      id: "1",
+      title: "Porsche 911 GT3 - Full Detail",
+      category: "Ceramic Coating",
+      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
+      images: [],
+      date: "2024-03-01"
+    },
+    {
+      id: "2",
+      title: "Mercedes-Benz G-Wagon - Interior",
+      category: "Interior Detail",
+      image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?q=80&w=2070&auto=format&fit=crop",
+      images: [],
+      date: "2024-02-15"
+    }
+  ];
+
+  const fallbackServices = [
+    { id: "interior", title: "Interior Detailing", description: "실내 정밀 세정 및 가죽 보호 케어", image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop", price: "", order: 1, features: [] },
+    { id: "paint", title: "Paint Correction", description: "스크래치 제거 및 도장면 광택 최적화", image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop", price: "", order: 2, features: [] },
+    { id: "ceramic", title: "Ceramic Coating", description: "최상급 세라믹 코팅 보호막 형성", image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop", price: "", order: 3, features: [] },
+    { id: "signature", title: "Premium Hand Wash", description: "전문적인 프리미엄 세차 서비스", image: "https://images.unsplash.com/photo-1605515298946-d062f2e9da53?q=80&w=2000&auto=format&fit=crop", price: "", order: 4, features: [] }
+  ];
+
   const [heroImage, setHeroImage] = useState("https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=2069&auto=format&fit=crop");
-  const [recentWorks, setRecentWorks] = useState<PortfolioItem[]>([]);
-  const [services, setServices] = useState<Service[]>([]);
+  const [recentWorks, setRecentWorks] = useState<PortfolioItem[]>(fallbackRecentWorks);
+  const [services, setServices] = useState<Service[]>(fallbackServices);
 
   useEffect(() => {
     const loadData = async () => {
-      const image = await getHeroImage();
-      setHeroImage(image);
-      
-      const items = await getPortfolioItems();
-      if (items.length > 0) {
-        setRecentWorks(items.slice(0, 2));
-      } else {
-        // Fallback examples if DB is empty
-        setRecentWorks([
-          {
-            id: "1",
-            title: "Porsche 911 GT3 - Full Detail",
-            category: "Ceramic Coating",
-            image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
-            images: [],
-            date: "2024-03-01"
-          },
-          {
-            id: "2",
-            title: "Mercedes-Benz G-Wagon - Interior",
-            category: "Interior Detail",
-            image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?q=80&w=2070&auto=format&fit=crop",
-            images: [],
-            date: "2024-02-15"
-          }
-        ]);
-      }
+      try {
+        const image = await getHeroImage();
+        if (image) setHeroImage(image);
+        
+        const items = await getPortfolioItems();
+        if (items && items.length > 0) {
+          setRecentWorks(items.slice(0, 2));
+        }
 
-      const fetchedServices = await getServices();
-      if (fetchedServices.length > 0) {
-        setServices(fetchedServices.slice(0, 4));
-      } else {
-        setServices([
-          { id: "interior", title: "Interior Detailing", description: "실내 정밀 세정 및 가죽 보호 케어", image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop", price: "", order: 1, features: [] },
-          { id: "paint", title: "Paint Correction", description: "스크래치 제거 및 도장면 광택 최적화", image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop", price: "", order: 2, features: [] },
-          { id: "ceramic", title: "Ceramic Coating", description: "최상급 세라믹 코팅 보호막 형성", image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop", price: "", order: 3, features: [] },
-          { id: "signature", title: "Premium Hand Wash", description: "전문적인 프리미엄 세차 서비스", image: "https://images.unsplash.com/photo-1605515298946-d062f2e9da53?q=80&w=2000&auto=format&fit=crop", price: "", order: 4, features: [] }
-        ]);
+        const fetchedServices = await getServices();
+        if (fetchedServices && fetchedServices.length > 0) {
+          setServices(fetchedServices.slice(0, 4));
+        }
+      } catch (error) {
+        console.error("Home loadData error:", error);
       }
     };
     

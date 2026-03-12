@@ -6,15 +6,73 @@ import { getServiceById, Service } from "@/lib/store";
 
 export default function ServiceDetail() {
   const { id } = useParams<{ id: string }>();
-  const [service, setService] = useState<Service | null>(null);
+  
+  const fallbacks: Record<string, Service> = {
+    "interior": {
+      id: "interior",
+      title: "Interior Detailing",
+      price: "₩150,000부터",
+      description: "실내 전체와 트렁크 공간에 대한 정밀 스팀/딥 클리닝 서비스를 제공합니다. 가죽 시트는 pH 중성 세정제로 정밀 세척 후 전용 컨디셔너로 영양을 공급하며, 카페트와 직물 시트는 샴푸 추출 방식을 통해 깊은 곳의 오염까지 제거합니다.",
+      image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop",
+      order: 1,
+      features: ["실내 및 트렁크 정밀 스팀/딥 클리닝", "pH 중성 가죽 세정 및 컨디셔닝"],
+      pricing: [
+        { title: "실내 정밀 딥 클리닝", price: "₩150,000부터", description: "전체 실내 케어 서비스", features: ["대시보드 세정", "가죽 시트 클리닝"] }
+      ]
+    },
+    "paint": {
+      id: "paint",
+      title: "Paint Correction",
+      price: "From ₩600,000",
+      description: "도장면의 스크래치, 스월마크, 워터스팟 등을 정밀하게 연마하여 신차 이상의 완벽한 도장 상태로 복원하는 광택 작업입니다.",
+      image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop",
+      order: 2,
+      features: ["정밀 마스킹 및 전처리", "수성 광택 (1~3 Step)"],
+      pricing: [
+        { title: "라이트 폴리싱", description: "미세 스크래치 제거", features: ["1단계 광택 공정"] }
+      ]
+    },
+    "ceramic": {
+      id: "ceramic",
+      title: "Ceramic Coating",
+      price: "From ₩800,000",
+      description: "최상급 세라믹 코팅제를 도포하여 도장면을 보호하고, 강력한 발수력과 방오성을 부여하여 차량 관리를 수월하게 합니다.",
+      image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop",
+      order: 3,
+      features: ["9H 경도 프리미엄 세라믹 코팅", "휠 및 캘리퍼 코팅"],
+      pricing: [
+        { title: "신차 코팅 패키지", description: "최상의 상태 보존", features: ["세라믹 코팅 2레이어"] }
+      ]
+    },
+    "signature": {
+      id: "signature",
+      title: "Premium Hand Wash",
+      price: "From ₩250,000",
+      description: "차량 내/외부의 오염을 안전하게 제거하고 본연의 색감과 광택을 끌어올리는 프리미엄 세차 서비스입니다.",
+      image: "https://images.unsplash.com/photo-1605515298946-d062f2e9da53?q=80&w=2000&auto=format&fit=crop",
+      order: 4,
+      features: ["프리워시 및 스노우폼 세차", "철분 및 타르 제거"],
+      pricing: [
+        { title: "프리미엄 핸드워시", price: "₩95,000", features: ["2버킷 방식 미트질"] }
+      ]
+    }
+  };
+
+  const [service, setService] = useState<Service | null>(id ? (fallbacks[id] || null) : null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadService = async () => {
       if (id) {
         setIsLoading(true);
-        const data = await getServiceById(id);
-        setService(data);
+        try {
+          const data = await getServiceById(id);
+          if (data) {
+            setService(data);
+          }
+        } catch (error) {
+          console.error("ServiceDetail loadService error:", error);
+        }
         setIsLoading(false);
       }
     };
@@ -22,7 +80,7 @@ export default function ServiceDetail() {
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (isLoading) {
+  if (!service && isLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="animate-pulse text-black/30 tracking-widest uppercase">Loading Service...</div>

@@ -6,16 +6,61 @@ import { PortfolioItem, getPortfolioItems } from "@/lib/store";
 
 export default function PortfolioDetail() {
   const { id } = useParams<{ id: string }>();
-  const [item, setItem] = useState<PortfolioItem | null>(null);
+  
+  const fallbacks: Record<string, PortfolioItem> = {
+    "1": {
+      id: "1",
+      title: "Porsche 911 GT3 - Full Detail & Ceramic Coating",
+      category: "Ceramic Coating",
+      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
+      images: [
+        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=1974&auto=format&fit=crop"
+      ],
+      date: "2024-03-01",
+      description: "포르쉐 911 GT3 차량의 전체 디테일링 및 최상급 세라믹 코팅 시공 사례입니다. 도장면의 광택을 극대화하고 장기적인 보호를 위해 3레이어 코팅이 적용되었습니다."
+    },
+    "2": {
+      id: "2",
+      title: "Mercedes-Benz G-Wagon - Interior Restoration",
+      category: "Interior Detail",
+      image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?q=80&w=2070&auto=format&fit=crop",
+      images: [
+        "https://images.unsplash.com/photo-1520031441872-265e4ff70366?q=80&w=2070&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?q=80&w=2070&auto=format&fit=crop"
+      ],
+      date: "2024-02-15",
+      description: "G-바겐 차량의 실내 가죽 복원 및 딥 클리닝 작업입니다. 세월의 흔적을 지우고 신차 수준의 실내 컨디션을 회복하는 데 중점을 두었습니다."
+    },
+    "3": {
+      id: "3",
+      title: "BMW M4 - Paint Correction & PPF",
+      category: "Paint Correction",
+      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop",
+      images: [
+        "https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=2070&auto=format&fit=crop"
+      ],
+      date: "2024-01-20",
+      description: "BMW M4 차량의 도장면 결함 제거(광택) 및 프론트 패키지 PPF 시공입니다. 스톤칩 방지와 깊은 색감 구현을 목표로 작업되었습니다."
+    }
+  };
+
+  const [item, setItem] = useState<PortfolioItem | null>(id ? (fallbacks[id] || null) : null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadItem = async () => {
       setIsLoading(true);
-      const items = await getPortfolioItems();
-      const found = items.find((i) => i.id === id);
-      if (found) {
-        setItem(found);
+      try {
+        const items = await getPortfolioItems();
+        let found = items.find((i) => i.id === id);
+        
+        if (found) {
+          setItem(found);
+        }
+      } catch (error) {
+        console.error("PortfolioDetail loadItem error:", error);
       }
       setIsLoading(false);
     };
@@ -23,7 +68,7 @@ export default function PortfolioDetail() {
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (isLoading) {
+  if (!item && isLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="animate-pulse text-black/30 tracking-widest uppercase">Loading Portfolio...</div>
