@@ -247,7 +247,7 @@ export default function ServiceDetail() {
               <img
                 src={service.image}
                 alt={service.title}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
             </div>

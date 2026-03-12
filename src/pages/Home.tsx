@@ -133,7 +133,7 @@ export default function Home() {
               <a 
                 key={service.id} 
                 href={`/services/${service.id}`}
-                className="group relative h-[240px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-2xl md:rounded-3xl block shadow-lg"
+                className="group relative aspect-[4/5] md:aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-2xl md:rounded-3xl block shadow-lg"
               >
                 <div className="absolute inset-0 z-0">
                   <img
