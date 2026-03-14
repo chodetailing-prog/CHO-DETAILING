@@ -11,25 +11,86 @@ export default function ServiceDetail() {
     "interior": {
       id: "interior",
       title: "Interior Detailing",
-      price: "₩150,000부터",
-      description: "실내 전체와 트렁크 공간에 대한 정밀 스팀/딥 클리닝 서비스를 제공합니다. 가죽 시트는 pH 중성 세정제로 정밀 세척 후 전용 컨디셔너로 영양을 공급하며, 카페트와 직물 시트는 샴푸 추출 방식을 통해 깊은 곳의 오염까지 제거합니다.",
+      price: "₩290,000부터",
+      description: "차량 내부 전체와 트렁크는 스팀 세척으로 꼼꼼하게 청소합니다. 가죽 시트는 pH 중성 가죽 세척제로 세척한 후 컨디셔너로 관리합니다. 카펫, 매트, 직물 시트는 딥 클리닝과 샴푸 추출 방식으로 세척합니다. 대시보드, 센터 콘솔, 도어 패널은 세척 후 보호제를 도포하여 원래의 모습을 복원합니다. 유리창은 얼룩 없이 깨끗하게 닦습니다.\n\n오염이 심하거나 개/고양이 털이 과도하게 많은 경우 추가 요금이 발생할 수 있습니다. 부담 없이 이메일로 문의하시거나 매장을 방문하셔서 견적을 받아보세요.",
       image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2000&auto=format&fit=crop",
       order: 1,
-      features: ["실내 및 트렁크 정밀 스팀/딥 클리닝", "pH 중성 가죽 세정 및 컨디셔닝"],
+      features: [],
       pricing: [
-        { title: "실내 정밀 딥 클리닝", price: "₩150,000부터", description: "전체 실내 케어 서비스", features: ["대시보드 세정", "가죽 시트 클리닝"] }
+        {
+          title: "실내 정밀 딥클리닝",
+          price: "₩290,000",
+          description: "대시보드, 센터콘솔, 도어 패널 세정 및 가죽/직물 시트 정밀 클리닝을 포함한 전체 실내 케어 서비스입니다.",
+          features: [
+            "대시보드, 센터 콘솔 및 도어 패널 청소",
+            "가죽 시트 세척 및 관리",
+            "직물 시트 세척(샴푸 추출 방식)",
+            "차량 매트 및 카펫 청소 (샴푸 추출 방식)",
+            "플라스틱 부품 처리 (자외선 차단, 새로운 외관)",
+            "얼룩 없이 창문 닦기",
+            "평균 소요 기간: 1일"
+          ]
+        },
+        {
+          title: "오존 살균 탈취",
+          price: "₩50,000",
+          description: "실내의 불쾌한 냄새를 근본적으로 제거하는 살균 탈취 서비스입니다. (실내 청소 후에만 가능)",
+          features: [
+            "차량 실내 냄새 제거",
+            "악취 근원지 중화",
+            "오존 가스가 구석구석까지 침투하여 살균",
+            "실내 청소 후에만 가능"
+          ]
+        },
+        {
+          title: "천장(헤드라이너) 클리닝",
+          price: "₩50,000",
+          description: "특수 세정제를 사용하여 천장의 얼룩과 오염을 제거하는 서비스입니다. 가격은 오염도에 따라 상이할 수 있습니다.",
+          features: [
+            "전용 세정제를 이용한 얼룩 및 오염 제거",
+            "오염도에 따라 가격 변동 가능"
+          ]
+        }
       ]
     },
     "paint": {
       id: "paint",
       title: "Paint Correction",
-      price: "From ₩600,000",
-      description: "도장면의 스크래치, 스월마크, 워터스팟 등을 정밀하게 연마하여 신차 이상의 완벽한 도장 상태로 복원하는 광택 작업입니다.",
+      price: "₩450,000부터",
+      description: "긁힘, 흠집, 광택을 잃은 페인트를 제거하여 흠집 없이 최적의 광택과 깊이감을 선사하는 마감 처리를 해드립니다! 플라스틱이나 고무와 같은 민감한 부위는 연마제와의 마찰을 방지하기 위해 전문적으로 보호 처리됩니다.\n\n저희는 광택 작업을 가벼운 작업과 강도 높은 작업, 두 단계로 나눕니다. 어떤 작업이 고객님의 차량에 적합한지는 도장면의 상태와 원하시는 결과에 따라 결정됩니다.\n\n견적 문의는 부담 없이 연락 주시고, 페인트 상태를 직접 확인하고 싶으시면 언제든지 저희 매장을 방문해 주세요.",
       image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop",
       order: 2,
-      features: ["정밀 마스킹 및 전처리", "수성 광택 (1~3 Step)"],
+      features: [],
       pricing: [
-        { title: "라이트 폴리싱", description: "미세 스크래치 제거", features: ["1단계 광택 공정"] }
+        { 
+          title: "라이트 폴리싱 (Light Polish)", 
+          price: "₩450,000",
+          description: "미세한 스크래치 제거 및 광택 복원", 
+          features: [
+            "1단계 광택 공정", 
+            "미세한 스크래치 제거",
+            "최적의 광택 부여",
+            "신차 또는 미세한 사용감이 있는 차량에 권장",
+            "SUV + 5만원",
+            "RV + 10만원",
+            "대형 차량은 별도 문의"
+          ] 
+        },
+        { 
+          title: "헤비 폴리싱 (Heavy Polish)", 
+          price: "₩850,000",
+          description: "깊은 스크래치 및 결함 제거", 
+          features: [
+            "다단계(3스텝) 광택 공정", 
+            "중간 및 깊은 스크래치 제거",
+            "산화물, 얼룩, 홀로그램 제거",
+            "최적의 광택 부여",
+            "사용감이 많은 차량에 권장",
+            "SUV + 5만원",
+            "RV + 10만원",
+            "대형 차량은 별도 문의"
+          ] 
+        }
       ]
     },
     "ceramic": {
@@ -100,180 +161,191 @@ export default function ServiceDetail() {
   }
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col bg-white">
       {/* Hero Banner */}
-      <section className="relative h-[40vh] md:h-[50vh] w-full flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative min-h-[40vh] md:min-h-[60vh] lg:h-[70vh] w-full flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0 z-0">
           <img
             src={service.image}
             alt={service.title}
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover opacity-50"
             referrerPolicy="no-referrer"
           />
         </div>
-        <div className="relative z-10 text-center px-6">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl font-bold tracking-tighter uppercase text-white mb-4"
-          >
-            {service.title}
-          </motion.h1>
+        <div className="relative z-10 text-center px-6 py-20">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-16 h-1 bg-white mx-auto"
-          />
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter uppercase text-white mb-6 leading-none">
+              {service.title}
+            </h1>
+            <div className="w-16 md:w-24 h-1 md:h-1.5 bg-white mx-auto" />
+          </motion.div>
         </div>
       </section>
 
-      {/* Main Content Split */}
-      <section className="max-w-7xl mx-auto px-6 py-20 md:py-32 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-          
-          {/* Left Column: Text & Pricing */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-12"
-          >
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-                {service.title} 상세 안내
-              </h2>
-              <p className="text-lg text-black/70 leading-relaxed font-light">
+      {/* Detailed Guide Section */}
+      <section className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="space-y-6 md:space-y-8"
+            >
+              <div className="space-y-3 md:space-y-4">
+                <h2 className="text-xs md:text-sm font-bold tracking-[0.4em] uppercase text-black/30">Service Overview</h2>
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-black leading-tight">
+                  {service.id === 'interior' ? (
+                    <>차량 내부 <span className="font-extrabold">꼼꼼한 청소</span></>
+                  ) : service.id === 'paint' ? (
+                    <>자동차 광택 · 폴리싱</>
+                  ) : (
+                    <>{service.title} 상세 안내</>
+                  )}
+                </h3>
+              </div>
+              <p className="text-lg md:text-xl text-black/60 leading-relaxed font-light break-keep whitespace-pre-line">
                 {service.description}
               </p>
-            </div>
-
-            {/* Features List */}
-            {service.features && service.features.length > 0 && (
-              <div className="space-y-6">
-                <h3 className="text-xl font-bold tracking-tight border-b border-black/10 pb-4">
-                  주요 서비스 내용
-                </h3>
-                <ul className="space-y-4">
+              
+              {/* Features Grid */}
+              {service.features && service.features.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 pt-6 md:pt-8">
                   {service.features.map((feature, fIdx) => (
-                    <li key={fIdx} className="flex items-start gap-4 text-black/80">
-                      <CheckCircle2 size={20} className="text-black/40 shrink-0 mt-1" strokeWidth={2} />
-                      <span className="text-base font-light leading-relaxed">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Pricing List */}
-            {service.pricing && service.pricing.length > 0 && (
-              <div className="space-y-8 pt-8">
-                <h3 className="text-2xl font-bold tracking-tight border-b border-black/10 pb-4">
-                  서비스 가격 안내
-                </h3>
-                <div className="space-y-10">
-                  {service.pricing.map((plan, pIdx) => (
-                    <div key={pIdx} className="space-y-4">
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-                        <h4 className="text-xl font-bold tracking-tight text-black">
-                          {plan.title}
-                        </h4>
-                        {plan.price && (
-                          <span className="text-lg font-medium text-black/60">
-                            {plan.price}
-                          </span>
-                        )}
-                      </div>
-                      
-                      {plan.description && (
-                        <p className="text-sm text-black/60 font-light leading-relaxed">
-                          {plan.description}
-                        </p>
-                      )}
-
-                      {plan.features && (
-                        <ul className="space-y-2 mt-4">
-                          {plan.features.map((item, iIdx) => (
-                            <li key={iIdx} className="flex items-center gap-3 text-sm text-black/70 font-light">
-                              <div className="w-1.5 h-1.5 bg-black/30 rounded-full shrink-0" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-
-                      {plan.categories && (
-                        <div className="bg-black/[0.03] p-6 rounded-lg space-y-4 mt-6">
-                          {plan.categories.map((cat, cIdx) => (
-                            <div key={cIdx} className="space-y-3">
-                              <h5 className="text-xs font-bold tracking-widest uppercase text-black/40">{cat.title}</h5>
-                              <div className="space-y-2">
-                                {cat.items.map((item, iIdx) => (
-                                  <div key={iIdx} className="flex justify-between items-center border-b border-black/5 pb-2 last:border-0 last:pb-0">
-                                    <span className="text-sm text-black/70">{item.label}</span>
-                                    <span className="text-sm font-medium text-black">{item.price}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                    <div key={fIdx} className="flex items-start gap-3 md:gap-4">
+                      <CheckCircle2 size={20} className="text-black shrink-0 mt-1 md:mt-0.5" strokeWidth={1.5} />
+                      <span className="text-sm md:text-base text-black/80 font-medium leading-tight">{feature}</span>
                     </div>
                   ))}
                 </div>
-                
-                <div className="pt-8">
-                  <a 
-                    href="/contact" 
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-black text-white text-sm font-bold tracking-widest uppercase hover:bg-black/80 transition-colors rounded-sm"
-                  >
-                    예약 문의하기 <ArrowRight size={18} />
-                  </a>
-                </div>
-              </div>
-            )}
-          </motion.div>
+              )}
+            </motion.div>
 
-          {/* Right Column: Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:sticky lg:top-32"
-          >
-            <div className="aspect-[4/5] md:aspect-square lg:aspect-[3/4] overflow-hidden rounded-xl shadow-2xl">
-              <img
-                src={service.image}
-                alt={service.title}
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
+              <div className="aspect-[4/5] sm:aspect-video lg:aspect-square overflow-hidden rounded-2xl md:rounded-3xl shadow-2xl">
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              {/* Decorative element */}
+              <div className="absolute -bottom-4 md:-bottom-6 -right-4 md:-right-6 w-24 md:w-32 h-24 md:h-32 bg-black/5 rounded-full -z-10" />
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Before / After Section Placeholder */}
-      <section className="w-full bg-black/5 py-24 px-6">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Before / After 결과
-          </h2>
-          <p className="text-black/60 font-light leading-relaxed max-w-2xl mx-auto">
+      {/* Pricing Section - Distinct Background */}
+      {service.pricing && service.pricing.length > 0 && (
+        <section className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 bg-black/[0.02] border-y border-black/5">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 md:mb-20 space-y-3 md:space-y-4">
+              <h2 className="text-xs md:text-sm font-bold tracking-[0.4em] uppercase text-black/30">Pricing & Plans</h2>
+              <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tighter uppercase text-black">
+                {service.id === 'interior' ? '실내 세차 가격' : service.id === 'paint' ? '자동차 광택 · 폴리싱 가격' : `${service.title} 가격 안내`}
+              </h3>
+              <p className="text-sm md:text-base text-black/40 font-light max-w-xl mx-auto break-keep">모든 작업은 차량의 크기와 오염도에 따라 최종 견적이 변동될 수 있습니다.</p>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-10">
+              {service.pricing.map((plan, pIdx) => (
+                <motion.div 
+                  key={pIdx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: pIdx * 0.1, duration: 0.6 }}
+                  className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-black/5 flex flex-col hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] transition-all duration-500 group w-full md:w-[calc(50%-2rem)] xl:w-[calc(33.333%-2.5rem)] max-w-lg"
+                >
+                  <div className="mb-6 md:mb-10">
+                    <h4 className="text-xl lg:text-3xl font-bold tracking-tight text-black mb-3 sm:mb-4 md:mb-8 leading-tight min-h-0 md:min-h-[4.5rem]">
+                      {plan.title}
+                    </h4>
+                    
+                    {plan.price && (
+                      <div className="flex items-baseline flex-wrap gap-1 mb-2">
+                        <span className="text-sm sm:text-base lg:text-xl font-light text-black">₩</span>
+                        <span className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tighter text-black">
+                          {plan.price.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </span>
+                        <span className="text-[10px] sm:text-xs font-medium text-black/40 ml-1">incl. VAT</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-grow space-y-3 md:space-y-5 mb-6 sm:mb-8 md:mb-12">
+                    {plan.features && plan.features.map((feature, fIdx) => {
+                      const isAdditionalInfo = feature.includes('SUV') || feature.includes('RV') || feature.includes('별도 문의');
+                      const isPriceLine = feature.includes('+') && (feature.includes('만원') || feature.includes('원'));
+                      
+                      return (
+                        <div key={fIdx} className={`flex items-start gap-2 sm:gap-3 md:gap-4 ${isAdditionalInfo ? '!mt-1' : ''}`}>
+                          {!isAdditionalInfo && (
+                            <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-black/20 rounded-full mt-2 md:mt-2.5 shrink-0 group-hover:bg-black/40 transition-colors" />
+                          )}
+                          <span className={`text-sm md:text-base leading-relaxed break-keep ${isAdditionalInfo ? 'text-black/80' : 'text-black/60 font-light'} ${isAdditionalInfo && !isPriceLine ? 'pl-0' : ''}`}>
+                            {isPriceLine ? (
+                              <>
+                                <span className="font-light">{feature.split('+')[0]}</span>
+                                <span className="text-black font-bold">+{feature.split('+')[1]}</span>
+                              </>
+                            ) : feature}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="mt-auto">
+                    <a 
+                      href="/contact"
+                      className="w-full py-3 sm:py-4 md:py-6 bg-black text-white text-[10px] sm:text-xs md:text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase rounded-full flex items-center justify-center hover:bg-black/80 transition-all active:scale-[0.97] shadow-lg shadow-black/10"
+                    >
+                      상담 문의하기
+                    </a>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Before / After Section */}
+      <section className="w-full py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8">
+        <div className="max-w-5xl mx-auto text-center space-y-8 md:space-y-12">
+          <div className="space-y-3 md:space-y-4">
+            <h2 className="text-xs md:text-sm font-bold tracking-[0.4em] uppercase text-black/30">Results</h2>
+            <h3 className="text-3xl md:text-5xl font-bold tracking-tight">
+              Before / After 결과
+            </h3>
+          </div>
+          <p className="text-lg md:text-xl text-black/50 font-light leading-relaxed max-w-2xl mx-auto break-keep">
             최고급 케미컬과 정밀한 공정을 통해 차량이 어떻게 변화하는지 직접 확인해 보세요. 
-            (슬라이더 기능이 곧 추가될 예정입니다.)
+            타협하지 않는 완벽함이 결과로 증명됩니다.
           </p>
-          <div className="aspect-video bg-black/10 rounded-xl flex items-center justify-center overflow-hidden relative group">
+          <div className="aspect-video bg-black/5 rounded-2xl md:rounded-[2rem] flex items-center justify-center overflow-hidden relative group shadow-xl">
              <img
                 src={service.image}
                 alt="After Result"
-                className="w-full h-full object-cover opacity-80"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                 <span className="px-6 py-2 bg-white/90 text-black text-sm font-bold tracking-widest uppercase rounded-full shadow-lg">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-colors">
+                 <span className="px-6 md:px-10 py-3 md:py-4 bg-white text-black text-xs md:text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase rounded-full shadow-2xl">
                    After Result
                  </span>
               </div>

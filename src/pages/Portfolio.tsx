@@ -50,22 +50,22 @@ export default function Portfolio() {
   }, []);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-24">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="mb-20"
+        className="mb-12 sm:mb-20"
       >
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase mb-6">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter uppercase mb-4 sm:mb-6">
           Portfolio
         </h1>
-        <p className="text-xl text-black/50 font-light max-w-2xl break-keep">
+        <p className="text-base sm:text-lg md:text-xl text-black/50 font-light max-w-2xl break-keep">
           CHO DETAILING이 완성한 완벽함의 기록. 각 차량의 특성을 고려한 맞춤형 디테일링 솔루션을 제공합니다.
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 gap-y-12 sm:gap-y-16">
         {portfolioItems.map((item, idx) => (
           <motion.div
             key={item.id}
@@ -75,7 +75,7 @@ export default function Portfolio() {
             className="group"
           >
             <Link to={`/portfolio/${item.id}`} className="block">
-              <div className="aspect-[4/5] overflow-hidden bg-black/5 relative">
+              <div className="aspect-[4/5] overflow-hidden rounded-xl sm:rounded-2xl bg-black/5 relative shadow-md">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -88,9 +88,9 @@ export default function Portfolio() {
                   </span>
                 </div>
               </div>
-              <div className="mt-6">
-                <h3 className="text-xl font-bold tracking-tight">{item.title}</h3>
-                <p className="text-black/50 mt-2 text-sm uppercase tracking-widest">{item.category}</p>
+              <div className="mt-4 sm:mt-6">
+                <h3 className="text-lg sm:text-xl font-bold tracking-tight">{item.title}</h3>
+                <p className="text-black/50 mt-1 sm:mt-2 text-xs sm:text-sm uppercase tracking-widest">{item.category}</p>
               </div>
             </Link>
           </motion.div>

@@ -36,73 +36,73 @@ export default function Contact() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 pt-24 pb-12 scroll-mt-24">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-12 scroll-mt-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="mb-24 relative"
+        className="mb-12 sm:mb-24 relative"
       >
-        <div className="absolute -left-6 top-0 w-1 h-full bg-black/10" />
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase mb-8 leading-none">
+        <div className="absolute -left-4 sm:-left-6 top-0 w-1 h-full bg-black/10" />
+        <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter uppercase mb-6 sm:mb-8 leading-none">
           Contact
         </h1>
-        <p className="text-2xl text-black/50 font-light max-w-3xl leading-relaxed">
+        <p className="text-lg sm:text-xl md:text-2xl text-black/50 font-light max-w-3xl leading-relaxed break-keep">
           차량 관리에 대한 모든 문의를 환영합니다. <br className="hidden md:block" />
           최상의 서비스를 위해 100% 예약제로 운영됩니다.
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-24 items-start">
         {/* Inquiry Form */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-black/5 pt-12 px-12 pb-6 rounded-sm"
+          className="bg-black/5 pt-8 sm:pt-12 px-6 sm:px-12 pb-6 rounded-xl sm:rounded-sm"
         >
-          <h2 className="text-3xl font-bold tracking-tight mb-12 uppercase text-black">예약 문의</h2>
-          <form className="space-y-10" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div className="space-y-3">
-                <label className="text-xs font-bold tracking-[0.3em] uppercase text-black/40">Name</label>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8 sm:mb-12 uppercase text-black">예약 문의</h2>
+          <form className="space-y-8 sm:space-y-10" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+              <div className="space-y-2 sm:space-y-3">
+                <label className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-black/40">Name</label>
                 <input 
                   type="text" 
                   name="name"
                   required
-                  className="w-full bg-transparent border-b border-black/20 py-4 focus:outline-none focus:border-black transition-colors text-lg text-black"
+                  className="w-full bg-transparent border-b border-black/20 py-3 sm:py-4 focus:outline-none focus:border-black transition-colors text-base sm:text-lg text-black"
                   placeholder="성함"
                 />
               </div>
-              <div className="space-y-3">
-                <label className="text-xs font-bold tracking-[0.3em] uppercase text-black/40">Phone</label>
+              <div className="space-y-2 sm:space-y-3">
+                <label className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-black/40">Phone</label>
                 <input 
                   type="tel" 
                   name="phone"
                   required
-                  className="w-full bg-transparent border-b border-black/20 py-4 focus:outline-none focus:border-black transition-colors text-lg text-black"
+                  className="w-full bg-transparent border-b border-black/20 py-3 sm:py-4 focus:outline-none focus:border-black transition-colors text-base sm:text-lg text-black"
                   placeholder="연락처"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div className="space-y-3">
-                <label className="text-xs font-bold tracking-[0.3em] uppercase text-black/40">Car Model</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+              <div className="space-y-2 sm:space-y-3">
+                <label className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-black/40">Car Model</label>
                 <input 
                   type="text" 
                   name="car_model"
                   required
-                  className="w-full bg-transparent border-b border-black/20 py-4 focus:outline-none focus:border-black transition-colors text-lg text-black"
+                  className="w-full bg-transparent border-b border-black/20 py-3 sm:py-4 focus:outline-none focus:border-black transition-colors text-base sm:text-lg text-black"
                   placeholder="차종"
                 />
               </div>
-              <div className="space-y-3">
-                <label className="text-xs font-bold tracking-[0.3em] uppercase text-black/40">Service</label>
+              <div className="space-y-2 sm:space-y-3">
+                <label className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-black/40">Service</label>
                 <select 
                   name="service"
                   required
-                  className="w-full bg-transparent border-b border-black/20 py-4 focus:outline-none focus:border-black transition-colors appearance-none text-lg text-black"
+                  className="w-full bg-transparent border-b border-black/20 py-3 sm:py-4 focus:outline-none focus:border-black transition-colors appearance-none text-base sm:text-lg text-black"
                 >
                   <option value="">서비스 선택</option>
                   <option value="interior">Interior Detailing</option>
@@ -114,13 +114,13 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="space-y-3">
-              <label className="text-xs font-bold tracking-[0.3em] uppercase text-black/40">Message</label>
+            <div className="space-y-2 sm:space-y-3">
+              <label className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-black/40">Message</label>
               <textarea 
                 name="message"
                 required
                 rows={4}
-                className="w-full bg-transparent border-b border-black/20 py-4 focus:outline-none focus:border-black transition-colors resize-none text-lg text-black"
+                className="w-full bg-transparent border-b border-black/20 py-3 sm:py-4 focus:outline-none focus:border-black transition-colors resize-none text-base sm:text-lg text-black"
                 placeholder="문의 내용 (차량 상태, 원하시는 일정 등)"
               ></textarea>
             </div>
@@ -128,7 +128,7 @@ export default function Contact() {
             <button 
               type="submit"
               disabled={status === "submitting"}
-              className="w-full py-6 bg-black text-white font-bold tracking-[0.4em] uppercase hover:bg-black/80 transition-all hover:scale-[1.01] active:scale-[0.99] mt-10 disabled:opacity-50 disabled:cursor-not-allowed rounded-sm"
+              className="w-full py-4 sm:py-6 bg-black text-white text-sm sm:text-base font-bold tracking-[0.3em] sm:tracking-[0.4em] uppercase hover:bg-black/80 transition-all hover:scale-[1.01] active:scale-[0.99] mt-6 sm:mt-10 disabled:opacity-50 disabled:cursor-not-allowed rounded-full sm:rounded-sm"
             >
               {status === "submitting" ? "Sending..." : status === "success" ? "Message Sent!" : "Send Message"}
             </button>
@@ -166,7 +166,9 @@ export default function Contact() {
               </p>
               <p className="flex items-center gap-6 group">
                 <Mail size={28} className="text-black shrink-0 opacity-40 group-hover:opacity-100 transition-opacity" />
-                <span className="border-b border-black/10">chodetailing@gmail.com</span>
+                <a href="mailto:chodetailing@gmail.com" className="border-b border-black/10 hover:border-black transition-colors">
+                  chodetailing@gmail.com
+                </a>
               </p>
             </div>
           </div>

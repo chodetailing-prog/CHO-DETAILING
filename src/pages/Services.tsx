@@ -21,7 +21,7 @@ export default function Services() {
       title: "Paint Correction", 
       description: "스크래치 제거 및 도장면 광택 최적화", 
       image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=2000&auto=format&fit=crop", 
-      price: "From ₩600,000", 
+      price: "₩450,000부터", 
       order: 2, 
       features: ["수성 광택", "결함 제거"] 
     },
@@ -73,16 +73,16 @@ export default function Services() {
   return (
     <div className="w-full">
       {/* Header Section */}
-      <section className="max-w-7xl mx-auto px-6 py-24 text-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-5xl md:text-8xl font-bold tracking-tighter uppercase mb-8">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter uppercase mb-6 sm:mb-8">
             Our Services
           </h1>
-          <p className="text-xl text-black/50 font-light max-w-2xl mx-auto leading-relaxed break-keep">
+          <p className="text-base sm:text-lg md:text-xl text-black/50 font-light max-w-2xl mx-auto leading-relaxed break-keep px-4">
             차량의 가치를 보존하고 본연의 아름다움을 극대화하는 <br className="hidden md:block" />
             CHO DETAILING만의 하이엔드 케어 솔루션을 확인해 보세요.
           </p>
@@ -90,19 +90,19 @@ export default function Services() {
       </section>
 
       {/* Services Grid Navigation */}
-      <section className="max-w-7xl mx-auto px-6 mb-32">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 mb-20 sm:mb-32">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {services.map((service) => (
             <Link
               key={service.id}
               to={`/services/${service.id}`}
-              className="group relative h-[220px] md:h-[350px] lg:h-[400px] overflow-hidden rounded-2xl md:rounded-3xl block text-left shadow-lg hover:shadow-xl transition-all duration-500"
+              className="group relative h-[180px] sm:h-[280px] md:h-[350px] lg:h-[400px] overflow-hidden rounded-xl sm:rounded-3xl block text-left shadow-lg hover:shadow-xl transition-all duration-500"
             >
               <div className="absolute inset-0 z-0">
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="w-full h-full object-cover transition-transform duration-[1100ms] ease-in-out group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-1000 ease-in-out group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
                 {/* Base dark overlay */}
@@ -113,11 +113,11 @@ export default function Services() {
               </div>
               
               <div className="absolute inset-0 z-10 flex flex-col justify-end px-6 pb-6 md:px-8 md:pb-8 text-white">
-                <div className="relative z-20 transform transition-all duration-[1100ms] ease-in-out group-hover:-translate-y-2 group-active:-translate-y-2">
+                <div className="relative z-20 transform transition-all duration-1000 ease-in-out group-hover:-translate-y-2 group-active:-translate-y-2">
                   <h3 className="text-xl md:text-2xl lg:text-4xl font-bold tracking-tight drop-shadow-lg">
                     {service.title}
                   </h3>
-                  <div className="max-h-0 opacity-0 group-hover:max-h-16 group-hover:opacity-100 group-active:max-h-16 group-active:opacity-100 transition-all duration-[1100ms] ease-in-out overflow-hidden">
+                  <div className="max-h-0 opacity-0 group-hover:max-h-16 group-hover:opacity-100 group-active:max-h-16 group-active:opacity-100 transition-all duration-1000 ease-in-out overflow-hidden">
                     <p className="text-xs md:text-sm lg:text-base text-white/90 font-light mt-3 leading-relaxed max-w-lg line-clamp-3 break-keep">
                       {shortDescriptions[service.id] || service.description}
                     </p>

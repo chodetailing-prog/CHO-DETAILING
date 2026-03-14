@@ -73,7 +73,7 @@ export default function Home() {
   return (
     <div className="flex flex-col w-full">
       {/* Hero Section */}
-      <section className="relative h-[80vh] w-full flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative h-[70vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh] w-full flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0 z-0">
           <img
             src={siteConfig.heroImage}
@@ -82,12 +82,12 @@ export default function Home() {
             referrerPolicy="no-referrer"
           />
         </div>
-        <div className="relative z-10 text-center text-white px-6">
+        <div className="relative z-10 text-center text-white px-4 sm:px-6">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-4xl md:text-7xl font-black tracking-tighter uppercase mb-6 leading-[0.9]"
+            className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter uppercase mb-4 sm:mb-6 leading-[0.9]"
           >
             {siteConfig.brandName.includes('&') ? (
               <>
@@ -105,7 +105,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-base md:text-xl font-light tracking-widest uppercase text-white/80 max-w-2xl mx-auto break-keep"
+            className="text-sm sm:text-base md:text-xl font-light tracking-widest uppercase text-white/80 max-w-2xl mx-auto break-keep px-4"
           >
             {siteConfig.heroSubtitle}
           </motion.p>
@@ -113,25 +113,25 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="mt-12"
+            className="mt-8 sm:mt-12"
           >
             <a
               href="/portfolio"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-medium tracking-widest uppercase hover:bg-black hover:text-white border border-white transition-all duration-300"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white text-black text-xs sm:text-sm font-medium tracking-widest uppercase hover:bg-black hover:text-white border border-white transition-all duration-300"
             >
-              View Portfolio <ArrowRight size={20} />
+              View Portfolio <ArrowRight size={18} className="sm:w-5 sm:h-5" />
             </a>
           </motion.div>
         </div>
       </section>
 
       {/* Philosophy Section */}
-      <section className="py-32 px-6 bg-black/5">
+      <section className="py-20 sm:py-32 px-4 sm:px-6 bg-black/5">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-12 break-keep">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight mb-8 sm:mb-12 break-keep">
             타협하지 않는 완벽함
           </h2>
-          <p className="text-lg md:text-xl text-black/60 font-light leading-relaxed break-keep">
+          <p className="text-base sm:text-lg md:text-xl text-black/60 font-light leading-relaxed break-keep">
             CHO DETAILING은 단순한 세차를 넘어, 차량 본연의 가치를 복원하고 극대화하는 하이엔드 디테일링 스튜디오입니다. 
             최고급 케미컬과 검증된 공정, 그리고 장인정신을 바탕으로 당신의 차량에 숨결을 불어넣습니다.
           </p>
@@ -139,28 +139,28 @@ export default function Home() {
       </section>
 
       {/* Services Grid Section */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tighter uppercase mb-4 break-keep">CAR DETAILING SERVICES</h2>
-            <p className="text-black/50 max-w-2xl mx-auto font-light break-keep">
-              최상의 결과물을 위해 엄선된 제품과 정밀한 기술력을 결합합니다.<br />
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tighter uppercase mb-4 break-keep">CAR DETAILING SERVICES</h2>
+            <p className="text-sm sm:text-base text-black/50 max-w-2xl mx-auto font-light break-keep px-4">
+              최상의 결과물을 위해 엄선된 제품과 정밀한 기술력을 결합합니다.<br className="hidden sm:block" />
               각 차량의 상태에 최적화된 맞춤형 디테일링 솔루션을 경험해 보세요.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {services.map((service) => (
               <a 
                 key={service.id} 
                 href={`/services/${service.id}`}
-                className="group relative aspect-[3/2] md:aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-2xl md:rounded-3xl block shadow-lg"
+                className="group relative aspect-[4/3] sm:aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-xl sm:rounded-3xl block shadow-lg"
               >
                 <div className="absolute inset-0 z-0">
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover transition-transform duration-[1100ms] ease-in-out group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-1000 ease-in-out group-hover:scale-110"
                     referrerPolicy="no-referrer"
                   />
                   {/* Base dark overlay */}
@@ -171,11 +171,11 @@ export default function Home() {
                 </div>
                 
                 <div className="absolute inset-0 z-10 flex flex-col justify-end px-6 pb-6 md:px-8 md:pb-8 text-white">
-                  <div className="relative z-20 transform transition-all duration-[1100ms] ease-in-out group-hover:-translate-y-2 group-active:-translate-y-2">
+                  <div className="relative z-20 transform transition-all duration-1000 ease-in-out group-hover:-translate-y-2 group-active:-translate-y-2">
                     <h3 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight drop-shadow-lg">
                       {service.title}
                     </h3>
-                    <div className="max-h-0 opacity-0 group-hover:max-h-16 group-hover:opacity-100 group-active:max-h-16 group-active:opacity-100 transition-all duration-[1100ms] ease-in-out overflow-hidden">
+                    <div className="max-h-0 opacity-0 group-hover:max-h-16 group-hover:opacity-100 group-active:max-h-16 group-active:opacity-100 transition-all duration-1000 ease-in-out overflow-hidden">
                       <p className="text-xs md:text-sm lg:text-base text-white/90 font-light mt-3 leading-relaxed line-clamp-3 break-keep">
                         {shortDescriptions[service.id] || service.description}
                       </p>
