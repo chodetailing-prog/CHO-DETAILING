@@ -203,7 +203,7 @@ export default function ServiceDetail() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter uppercase text-white mb-6 leading-none">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter uppercase text-white mb-6 leading-none">
               {service.title}
             </h1>
             <div className="w-16 md:w-24 h-1 md:h-1.5 bg-white mx-auto" />
@@ -293,7 +293,7 @@ export default function ServiceDetail() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: pIdx * 0.1, duration: 0.6 }}
-                  className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-black/5 flex flex-col hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] transition-all duration-500 group w-full md:w-[calc(50%-2rem)] xl:w-[calc(33.333%-2.5rem)] max-w-lg"
+                  className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.2rem] lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-12 shadow-xl md:shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-black/5 flex flex-col hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] transition-all duration-500 group w-full md:w-[calc(50%-2rem)] xl:w-[calc(33.333%-2.5rem)] max-w-lg"
                 >
                   <div className="mb-6 md:mb-10">
                     <h4 className="text-xl lg:text-3xl font-bold tracking-tight text-black mb-3 sm:mb-4 md:mb-8 leading-tight min-h-0 md:min-h-[4.5rem]">
@@ -349,37 +349,34 @@ export default function ServiceDetail() {
         </section>
       )}
 
-      {/* Feature Sections (Split Layout / Mobile Overlay) */}
+      {/* Feature Sections (Split Layout) */}
       {service.featureSections && service.featureSections.length > 0 && (
         <section className="w-full overflow-hidden border-t border-black/5">
           {service.featureSections.map((section, index) => (
             <div 
               key={index} 
-              className={`relative flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center lg:h-[600px] overflow-hidden`}
+              className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center lg:h-[600px] bg-white`}
             >
-              {/* Image Side - Background on mobile (full width), Side on desktop */}
-              <div className={`absolute inset-0 w-full lg:relative lg:w-1/2 overflow-hidden bg-white`}>
+              {/* Image Side */}
+              <div className="w-full lg:w-1/2 h-64 sm:h-80 md:h-96 lg:h-full overflow-hidden">
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 0.2 }}
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1.5 }}
+                  transition={{ duration: 1.2 }}
                   className="w-full h-full"
                 >
                   <img 
                     src={section.image} 
                     alt={section.title}
-                    className="w-full h-full object-cover grayscale-[0.2] brightness-110"
+                    className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                   />
                 </motion.div>
-                {/* Gradient masks to fade the image into the background */}
-                <div className={`absolute inset-0 bg-gradient-to-b from-white via-transparent to-white lg:hidden pointer-events-none`} />
-                <div className={`absolute inset-0 bg-gradient-to-r ${index % 2 === 0 ? 'from-transparent to-white' : 'from-white to-transparent'} pointer-events-none`} />
               </div>
               
               {/* Text Side */}
-              <div className="relative z-10 w-full lg:w-1/2 h-full p-8 sm:p-12 md:p-16 lg:p-20 xl:p-24 flex flex-col justify-center space-y-6 md:space-y-8">
+              <div className="w-full lg:w-1/2 p-8 sm:p-12 md:p-16 lg:p-20 xl:p-24 flex flex-col justify-center space-y-6 md:space-y-8">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
